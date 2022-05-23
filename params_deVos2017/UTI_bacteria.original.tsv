@@ -1,0 +1,98 @@
+species	strain_id	strain_numbered	community	community_completeness	special_note
+Klebsiella pneumoniae		1	Comm1	complete	
+Enterococcus faecalis		2	Comm1	complete	
+Escherichia coli		3	Comm1	complete	
+Staphylococcus aureus		4	Comm1	complete	
+Enterococcus faecium		18	Comm2	complete	
+Enterococcus faecium		19	Comm2	complete	
+Escherichia coli		20	Comm2	complete	
+Pseudomonas aeruginosa		21	Comm2	complete	
+Enterococcus faecalis		34	Comm3	complete	
+Escherichia coli		35	Comm3	complete	
+Staphylococcus haemolyticus		36	Comm3	complete	
+Proteus mirabilis		37	Comm3	complete	
+Enterococcus faecalis		42	Comm4	complete	
+Escherichia coli		43	Comm4	complete	
+Staphylococcus aureus		44	Comm4	complete	
+Staphylococcus simulans		45	Comm4	complete	
+Pseudomonas aeruginosa		58	Comm5	complete	
+Enterococcus faecalis		59	Comm5	complete	
+Proteus mirabilis		60	Comm5	complete	
+Escherichia coli		61	Comm5	complete	
+Enterococcus faecalis		62	Comm6	complete	
+Proteus mirabilis		63	Comm6	complete	
+Enterobacter cloacae		64	Comm6	complete	
+Escherichia coli		65	Comm6	complete	
+Enterococcus faecalis		76	Comm7	complete	
+Escherichia coli		77	Comm7	complete	
+Proteus mirabilis		78	Comm7	complete	
+Staphylococcus haemolyticus		79	Comm7	complete	
+Enterococcus faecalis		80	Comm8	complete	
+Escherichia coli		81	Comm8	complete	
+Klebsiella oxytoca		82	Comm8	complete	
+Proteus mirabilis		83	Comm8	complete	
+Pseudomonas fluorescens	UTI 74	5	Comm9	incomplete	
+Escherichia coli	UTI 50	6	Comm9	incomplete	
+Klebsiella pneumoniae	UTI 49	7	Comm9	incomplete	
+Chryseobacterium indologenes	UTI 75	8	Comm9	incomplete	
+Pseudomonas aeruginosa	UTI 101	9	Comm10	incomplete	
+Enterococcus faecalis	UTI 134	10	Comm10	incomplete	
+Escherichia coli	UTI 83	11	Comm10	incomplete	
+Enterococcus faecalis	UTI 157	12	Comm10	incomplete	
+Serratia liquefaciens	UTI 84	13	Comm11	incomplete	
+Citrobacter koseri	UTI 85	14	Comm11	incomplete	
+Escherichia coli	UTI 86	15	Comm11	incomplete	
+Staphylococcus simulans	UTI 106	16	Comm11	incomplete	
+Gemella haemolysans	UTI 143	17	Comm11	incomplete	
+Enterococcus faecium	UTI 140	22	Comm12	incomplete	
+Pseudomonas luteola	UTI 103	23	Comm12	incomplete	
+Escherichia coli	UTI 146	NI	Comm12	incomplete	
+Proteus mirabilis	UTI 145	25	Comm12	incomplete	
+Pseudomonas aeruginosa	UTI 162	26	Comm13	incomplete	
+Proteus mirabilis	UTI 113	27	Comm13	incomplete	
+Escherichia coli	UTI 95	28	Comm13	incomplete	
+Rhizobium radiobacter	UTI 100	29	Comm13	incomplete	
+Pseudomonas aeruginosa	UTI 215	30	Comm14	incomplete	
+Escherichia coli	UTI 216	31	Comm14	incomplete	
+Staphylococcus epidermidis	UTI 217	32	Comm14	incomplete	
+Pantoea spp4	UTI 218	33	Comm14	incomplete	
+Escherichia coli	UTI 226	38	Comm15	incomplete	
+Enterococcus faecalis	UTI 225	39	Comm15	incomplete	
+Staphylococcus epidermidis	UTI 227	40	Comm15	incomplete	
+Pseudomonas aeruginosa	UTI 228	41	Comm15	incomplete	
+Escherichia coli	UTI 246	46	Comm16	incomplete	
+Citrobacter koseri	UTI 247	47	Comm16	incomplete	
+Enterococcus faecalis	UTI 212	48	Comm16	incomplete	
+Morganella morganii	UTI 248	49	Comm16	incomplete	
+Proteus mirabilis	UTI 260	72	Comm17	incomplete	
+Aerococcus urinae	UTI 261	73	Comm17	incomplete	
+Staphylococcus capitis	UTI 262	74	Comm17	incomplete	
+Escherichia coli	UTI 263	75	Comm17	incomplete	
+Proteus mirabilis	UTI 366	84	Comm18	incomplete	
+Enterococcus faecalis	UTI 367	85	Comm18	incomplete	
+Staphylococcus aureus	UTI 406	86	Comm18	incomplete	
+Pseudomonas aeruginosa	UTI 409	87	Comm18	incomplete	
+Escherichia coli	UTI 368	88	Comm18	incomplete	
+Escherichia coli	UTI 385	89	Comm19	incomplete	
+Enterobacter cloacae	UTI 386	90	Comm19	incomplete	
+Enterococcus faecalis	UTI 387	91	Comm19	incomplete	
+Morganella morganii	UTI 388	92	Comm19	incomplete	
+Escherichia coli	UTI 433	93	Comm20	incomplete	
+Aerococcus viridans	UTI 434	94	Comm20	incomplete	
+Pseudomonas aeruginosa	UTI 435	95	Comm20	incomplete	
+Enterococcus faecalis	UTI 457	96	Comm20	incomplete	
+Pseudomonas aeruginosa	UTI 454	24	Comm20	incomplete	strain_matID is also 97
+Escherichia coli	UTI 466	50	Comm21	incomplete	
+Pseudomonas aeruginosa	UTI 467	51	Comm21	incomplete	
+Staphylococcus capitis	UTI 497	52	Comm21	incomplete	
+Enterococcus facecalis	UTI 468	53	Comm21	incomplete	
+Proteus mirabilis	UTI 530	54	Comm22	incomplete	
+Escherichia coli	UTI 531	55	Comm22	incomplete	
+Enterococcus faecalis	UTI 532	56	Comm22	incomplete	
+Staphylococcus auricularis	UTI 533	57	Comm22	incomplete	
+Escherichia coli	UTI 18	66	Comm23	incomplete	
+Citrobacter braakii	UTI 17	67	Comm23	incomplete	
+Staphylococcus haemolyticus	UTI 65	68	Comm23	incomplete	
+Proteus mirabilis	UTI 443	69	Comm24	incomplete	
+Aerococcus viridans	UTI 444	70	Comm24	incomplete	
+Escherichia coli	UTI 445	71	Comm24	incomplete	

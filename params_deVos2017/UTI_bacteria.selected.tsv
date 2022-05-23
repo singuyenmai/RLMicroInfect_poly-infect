@@ -1,0 +1,73 @@
+species	strain_id	strain_numbered	community	community_completeness	special_note	strain_index	abbrev
+Enterococcus faecalis	UTI 532	56	Comm22	incomplete		0	Ent
+Enterococcus faecalis		2	Comm1	complete		1	Ent
+Enterococcus faecalis	UTI 387	91	Comm19	incomplete		2	Ent
+Enterococcus faecalis		42	Comm4	complete		3	Ent
+Enterococcus faecalis		59	Comm5	complete		4	Ent
+Enterococcus facecalis	UTI 468	53	Comm21	incomplete		5	Ent
+Enterococcus faecalis	UTI 134	10	Comm10	incomplete		6	Ent
+Enterococcus faecalis		62	Comm6	complete		7	Ent
+Enterococcus faecalis		80	Comm8	complete		8	Ent
+Enterococcus faecalis		34	Comm3	complete		9	Ent
+Enterococcus faecalis		76	Comm7	complete		10	Ent
+Enterococcus faecium	UTI 140	22	Comm12	incomplete		11	Ent
+Enterococcus faecium		18	Comm2	complete		12	Ent
+Enterococcus faecium		19	Comm2	complete		13	Ent
+Staphylococcus simulans	UTI 106	16	Comm11	incomplete		14	St
+Staphylococcus simulans		45	Comm4	complete		15	St
+Staphylococcus haemolyticus	UTI 65	68	Comm23	incomplete		16	St
+Staphylococcus haemolyticus		36	Comm3	complete		17	St
+Staphylococcus capitis	UTI 262	74	Comm17	incomplete		18	St
+Staphylococcus haemolyticus		79	Comm7	complete		19	St
+Staphylococcus aureus		4	Comm1	complete		20	St
+Staphylococcus aureus		44	Comm4	complete		21	St
+Pseudomonas luteola	UTI 103	23	Comm12	incomplete		22	Ps
+Pseudomonas aeruginosa	UTI 101	9	Comm10	incomplete		23	Ps
+Pseudomonas fluorescens	UTI 74	5	Comm9	incomplete		24	Ps
+Pseudomonas aeruginosa		21	Comm2	complete		25	Ps
+Pseudomonas aeruginosa	UTI 215	30	Comm14	incomplete		26	Ps
+Pseudomonas aeruginosa	UTI 467	51	Comm21	incomplete		27	Ps
+Pseudomonas aeruginosa	UTI 409	87	Comm18	incomplete		28	Ps
+Pseudomonas aeruginosa	UTI 228	41	Comm15	incomplete		29	Ps
+Pseudomonas aeruginosa		58	Comm5	complete		30	Ps
+Morganella morganii	UTI 388	92	Comm19	incomplete		31	Mm
+Proteus mirabilis	UTI 530	54	Comm22	incomplete		32	Pm
+Proteus mirabilis	UTI 260	72	Comm17	incomplete		33	Pm
+Proteus mirabilis		83	Comm8	complete		34	Pm
+Proteus mirabilis		37	Comm3	complete		35	Pm
+Proteus mirabilis	UTI 145	25	Comm12	incomplete		36	Pm
+Proteus mirabilis	UTI 443	69	Comm24	incomplete		37	Pm
+Proteus mirabilis		60	Comm5	complete		38	Pm
+Proteus mirabilis	UTI 366	84	Comm18	incomplete		39	Pm
+Proteus mirabilis		78	Comm7	complete		40	Pm
+Proteus mirabilis		63	Comm6	complete		41	Pm
+Serratia liquefaciens	UTI 84	13	Comm11	incomplete		42	KECS
+Klebsiella oxytoca		82	Comm8	complete		43	KECS
+Enterobacter cloacae	UTI 386	90	Comm19	incomplete		44	KECS
+Klebsiella pneumoniae		1	Comm1	complete		45	KECS
+Klebsiella pneumoniae	UTI 49	7	Comm9	incomplete		46	KECS
+Pantoea spp4	UTI 218	33	Comm14	incomplete		47	KECS
+Enterobacter cloacae		64	Comm6	complete		48	KECS
+Citrobacter koseri	UTI 85	14	Comm11	incomplete		49	KECS
+Citrobacter koseri	UTI 247	47	Comm16	incomplete		50	KECS
+Escherichia coli	UTI 83	11	Comm10	incomplete		51	Ecoli
+Escherichia coli	UTI 18	66	Comm23	incomplete		52	Ecoli
+Escherichia coli	UTI 50	6	Comm9	incomplete		53	Ecoli
+Escherichia coli	UTI 216	31	Comm14	incomplete		54	Ecoli
+Escherichia coli	UTI 445	71	Comm24	incomplete		55	Ecoli
+Escherichia coli		35	Comm3	complete		56	Ecoli
+Escherichia coli		20	Comm2	complete		57	Ecoli
+Escherichia coli		3	Comm1	complete		58	Ecoli
+Escherichia coli		61	Comm5	complete		59	Ecoli
+Escherichia coli	UTI 95	28	Comm13	incomplete		60	Ecoli
+Escherichia coli		81	Comm8	complete		61	Ecoli
+Escherichia coli	UTI 368	88	Comm18	incomplete		62	Ecoli
+Escherichia coli	UTI 226	38	Comm15	incomplete		63	Ecoli
+Escherichia coli	UTI 246	46	Comm16	incomplete		64	Ecoli
+Escherichia coli		43	Comm4	complete		65	Ecoli
+Escherichia coli		65	Comm6	complete		66	Ecoli
+Escherichia coli	UTI 531	55	Comm22	incomplete		67	Ecoli
+Escherichia coli	UTI 86	15	Comm11	incomplete		68	Ecoli
+Escherichia coli	UTI 466	50	Comm21	incomplete		69	Ecoli
+Escherichia coli	UTI 263	75	Comm17	incomplete		70	Ecoli
+Escherichia coli		77	Comm7	complete		71	Ecoli
