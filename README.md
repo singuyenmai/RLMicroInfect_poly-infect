@@ -16,3 +16,7 @@ Qualitative analyses on 2-species model - different regimes of species abundance
 **de Vos MGJ**, **Zagorski M**, **McNally A**, **Bollenbach T**. Interaction networks, ecological stability, and collective antibiotic tolerance in polymicrobial infections. *Proc Natl Acad Sci*. 2017;114: 10666–10671. doi:10.1073/PNAS.1713372114
 
 http://www.antimicrobe.org/h04c.files/history/PK-PD%20Quint.asp
+
+https://www.medicines.org.uk/emc/product/5752/smpc#gref
+
+https://go.drugbank.com/drugs/DB00440
