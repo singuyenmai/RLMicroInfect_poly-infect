@@ -5,7 +5,7 @@ import sys
 
 class Quali():
 
-    def __init__(self, param_file):
+    def __init__(self, param_file: str) -> None:
         with open(param_file) as f:
             param_dict = json.load(f)
         
@@ -96,8 +96,9 @@ class Quali():
         eqE = np.array([self.cE, 0.0])
         eqZ = np.array([0.0, self.cZ])
 
-        eqEZ = np.array([(self.cE * self.rE * self.rZ + self.cE * self.cZ * self.rZ * alpha_EZ) / (self.rE * self.rZ - self.cE * self.cZ * alpha_EZ * alpha_ZE),
-                        (self.cZ * self.rE * self.rZ + self.cE * self.cZ * self.rE * alpha_ZE) / (self.rE * self.rZ - self.cE * self.cZ * alpha_EZ * alpha_ZE)])
+        eqEZ_E = (self.cE * self.rE * self.rZ + self.cE * self.cZ * self.rZ * alpha_EZ) / (self.rE * self.rZ - self.cE * self.cZ * alpha_EZ * alpha_ZE)
+        eqEZ_Z = (self.cZ * self.rE * self.rZ + self.cE * self.cZ * self.rE * alpha_ZE) / (self.rE * self.rZ - self.cE * self.cZ * alpha_EZ * alpha_ZE)
+        eqEZ = np.array([eqEZ_E, eqEZ_Z])
 
         return [eqE, eqZ, eqEZ]
 
