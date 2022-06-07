@@ -12,10 +12,7 @@ class BacterialEnv():
     Microbial growth environment that are under drug treatment control policy
     '''
 
-    def __init__(self, param_file: str, sampling_time: float) -> None:
-        
-        with open(param_file) as f:
-            param_dict = json.load(f)
+    def __init__(self, param_dict: Dict, sampling_time: float, state_method="cont_E") -> None:
         
         self.set_params(param_dict)
         self.initial_S = np.array([self.init_E, self.init_Z, self.init_D])
@@ -28,17 +25,15 @@ class BacterialEnv():
         else:
             self.mono = False # if it's a co-culture env
         
-        # self.total_prescription = 0
-        
         self.sampling_time = sampling_time
         
         # self.get_reward = reward_func # function for the reward
         # self.reward_kwargs = reward_kwargs # kwargs for reward func
 
-        # self.state_method = state_method # method to derive observable state for the controller
+        self.state_method = state_method # method to derive observable state for the controller
         # self.n_states = n_states
         # self.OD2state = None
-        # self.state = self.get_state(self.state_method) # observable state to the controller
+        self.state = self.get_state(self.state_method) # observable state to the controller
 
     def set_params(self, param_dict: Dict) -> None:
         '''
@@ -69,8 +64,8 @@ class BacterialEnv():
     def set_state_method(self, state_method: str) -> None:
         self.state_method = state_method
     
-    def set_n_states(self, n_states: int) -> None:
-        self.n_states = n_states
+    # def set_n_states(self, n_states: int) -> None:
+        # self.n_states = n_states
     
     def ODEsys(self, t, S, Din: float) -> List:
         '''
@@ -102,16 +97,19 @@ class BacterialEnv():
 
     def step(self, action: Tuple) -> None:
         '''
-        Solve the ODEs system for a time period defined by `sampling_time` param, under the action provided by a controller
+        Solves the ODEs system for a time period defined by `sampling_time` param, under the action provided by a controller
         Parameters:
-            action (tuple): action chosen by the controller, in the form of (drug in or not - 1 or 0, time `Din` > 0.0)
+            action (tuple): action chosen by the controller, 
+                            in the form of (Din (float): "flow in" drug concentration, drug_time (float): time for "flow in" of drug)
         Returns:
-            state (int): (discretized) OD to be observed by the controller
+            state (int): the system/env state to be observed by the controller
             reward (float): reward calculated accordingly to the `reward_func`
             done (boolean): whether a terminal state has been observed
             info (dict): other interesting information of the system
         '''
-        Din, drug_time = self.action_2_drug(action)
+        Din, drug_time = action
+        if drug_time > self.sampling_time:
+            raise ValueError("Time duration for drug in cannot be longer than sampling time")
 
         t_start = self.tSol[-1]
         t_end = t_start + drug_time
@@ -136,34 +134,48 @@ class BacterialEnv():
             self.sSol = np.append(self.sSol, soly.T[1:, :], axis=0)
             self.tSol = np.append(self.tSol, sol.t[1:])
                 
-        # self.state = self.get_state(self.state_method)
+        self.state = self.get_state(self.state_method)
 
-        # reward, done, t_failure = self.get_reward(action, self.sSol, self.tSol, 
-        #                                           self.N_steps, self.Pmax, self.Pmax_err, 
-        #                                           **self.reward_kwargs)
-        # info = {
-        #     "integrate successful": r.successful(), 
-        #     "escape time": t_failure,
-        #     "total drug prescribed": self.total_prescription
-        # }
+        reward, done = None, None
 
-        # return self.state, reward, done, info
+        return self.state, reward, done
     
-    def action_2_drug(self, action: Tuple) -> Tuple:
+    def get_state(self, method: str):
         '''
-        Convert action into `Din` concentration & drug time
+        Returns the "current" state of the system/env for the controller to make decisions.
         Parameters:
-            action (tuple): action chosen by the controller, in the form of (drug in or not - 1 or 0, time `Din` > 0.0)
-        Returns: (wrapped in a tuple)
-            Din (float): "flow in" drug concentration
-            drug_time (float): the time period for when `Din` in the ODEs system equals the converted Din value here
+            method (str): name of the method to compute the state of the system
+        Returns: the type of the return depends on the method of deriving the state 
         '''
-        a1, a2 = action
-        
-        if a2 > self.sampling_time:
-            raise ValueError("Time duration for drug in cannot be longer than sampling time")
-        
-        Din = 100.0 if a1 == 1 else 0.0
-        drug_time = a2
+        if method == "cont_E": # returns the most recent density of species E (continuous value)
+            return self.sSol[-1, 0]
+        else:
+            raise ValueError("Method to derive observable state is not yet defined")
+    
+    def coexist_equilibrium(self) -> Tuple:
+        '''
+        Computes the equilibrium of coexistence
+        Returns: (wrapped in a tuple)
+            E: density of species E at the equilibrium (should be > 0.0)
+            Z: density of species Z at the equilibrium (should be > 0.0)
+        '''
+        E = (self.cE * self.rE * self.rZ + self.cE * self.cZ * self.rZ * self.alpha_EZ) / (self.rE * self.rZ - self.cE * self.cZ * self.alpha_EZ * self.alpha_ZE)
+        Z = (self.cZ * self.rE * self.rZ + self.cE * self.cZ * self.rE * self.alpha_ZE) / (self.rE * self.rZ - self.cE * self.cZ * self.alpha_EZ * self.alpha_ZE)
 
-        return (Din, drug_time)
+        if (E <= 0.0) or (Z <= 0.0):
+            raise RuntimeError("Coexist equilibrium does not exist.")
+        
+        return (E, Z)
+    
+    def reset_2_coexist_equilibrium(self) -> None:
+        '''
+        Resets the system. The initial densities of E & Z are set at the equilibrium of coexistence
+        '''
+        eqE, eqZ = self.coexist_equilibrium()
+
+        self.initial_S = np.array([eqE, eqZ, self.init_D])
+        
+        self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S))
+        self.tSol = np.array([0.0])
+
+        self.mono = False # system starts at coexistence equilibrium, so it's co-culture env
