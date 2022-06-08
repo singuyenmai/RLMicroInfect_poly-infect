@@ -1,9 +1,7 @@
 from typing import List, Dict, Tuple
-import json
 
 import numpy as np
 from scipy.integrate import solve_ivp
-import random
 import warnings
 
 class BacterialEnv():
@@ -15,15 +13,18 @@ class BacterialEnv():
     def __init__(self, param_dict: Dict, sampling_time: float, state_method="cont_E") -> None:
         
         self.set_params(param_dict)
-        self.initial_S = np.array([self.init_E, self.init_Z, self.init_D])
+        self.initial_S = np.array([self.init_E, self.init_Z, self.init_D]) # init conditions of S = [E, Z, D]
         
-        self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S))
-        self.tSol = np.array([0.0])
+        self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S)) # solution of S
+        self.tSol = np.array([0.0]) # solution of time t
 
         if self.init_Z == 0.0:
             self.mono = True # if it's a mono-culture env, this is just for visualization
         else:
             self.mono = False # if it's a co-culture env
+        
+        self.five_percent = 0.05 * self.init_E # 5% of init density E
+        self.t5p = np.array([]) # timepoints t at which density E = 5% of its initial condition
         
         self.sampling_time = sampling_time
         
@@ -94,7 +95,13 @@ class BacterialEnv():
         rhs = [dE_dt, dZ_dt, dD_dt]
 
         return rhs
-
+    
+    def event5p(self, t, S, Din: float) -> float:
+        '''
+        Event for ODE solver: time at which E density == 5% of its initial condition
+        '''
+        return S[0] - self.five_percent
+    
     def step(self, action: Tuple) -> None:
         '''
         Solves the ODEs system for a time period defined by `sampling_time` param, under the action provided by a controller
@@ -115,17 +122,22 @@ class BacterialEnv():
         t_end = t_start + drug_time
         init = self.sSol[-1, :]
 
-        sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(Din,), method="LSODA")
+        sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(Din,), 
+                        events=self.event5p, max_step=0.01,
+                        method="LSODA")
 
         self.sSol = np.append(self.sSol, sol.y.T[1:, :], axis=0)
         self.tSol = np.append(self.tSol, sol.t[1:])
+        self.t5p = np.append(self.t5p, sol.t_events)
 
         if (self.sampling_time - drug_time) > 0.0:
             t_start = self.tSol[-1]
             t_end = t_start + (self.sampling_time - drug_time)
             init = self.sSol[-1, :]
 
-            sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(0.0,), method="LSODA")
+            sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(0.0,), 
+                            events=self.event5p, max_step=0.01,
+                            method="LSODA")
 
             solEZ = sol.y[:2, :]
             roundedZero_solEZ = np.where(np.round(solEZ, 5) == 0, 0.0, solEZ)
@@ -133,6 +145,7 @@ class BacterialEnv():
 
             self.sSol = np.append(self.sSol, soly.T[1:, :], axis=0)
             self.tSol = np.append(self.tSol, sol.t[1:])
+            self.t5p = np.append(self.t5p, sol.t_events)
                 
         self.state = self.get_state(self.state_method)
 
@@ -179,3 +192,5 @@ class BacterialEnv():
         self.tSol = np.array([0.0])
 
         self.mono = False # system starts at coexistence equilibrium, so it's co-culture env
+        
+        self.five_percent = 0.05 * eqE

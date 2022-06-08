@@ -2,12 +2,12 @@ from typing import List, Dict, Tuple
 import numpy as np
 import math
 
-class Rational():
+class RationalAgent():
     '''
     Rational drug policy: Drug in at a constant concentration & frequency, whenever the targeted density (state) > 0.0
     '''
     def __init__(self, Din = 100.0, drug_time = 60.0*3):
-        self.type_name = "rational"
+        self.type_name = "Rational"
         self.Din = Din
         self.drug_time = drug_time
     
