@@ -126,6 +126,8 @@ def visualize_simulation(env, st='full',
         # set title
         if title == 'auto':
             title = "Simulation"
+        elif title == 'none':
+            title = ""
         
         ax[0].set_title(title, y=1.05)
         
