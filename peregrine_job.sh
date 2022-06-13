@@ -31,9 +31,8 @@ fi
 
 # Parse arguments
 param_file=$1
-shift
 log_file=$2
-shift
+shift 2
 options=$@
 
 # Write JobID
@@ -42,4 +41,4 @@ echo -e $SLURM_JOB_ID"\t"$param_file"\t"$log_file >> ./jobs.tsv
 # Add job to job-queue
 RUN_SCRIPT="/home/s4278836/polyInfect/run_experiment.py"
 python $RUN_SCRIPT -f $param_file $options > $log_file 2>&1
-# echo $PWD $param_file $log_file $options
+# echo $PWD $param_file $log_file $options > $log_file 2>&1

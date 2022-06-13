@@ -1,5 +1,5 @@
-from src.bacterial_env import BacterialEnv
-from src.controller import RationalAgent
+from polin.bacterial_env import BacterialEnv
+from polin.controller import RationalAgent
 
 from typing import List, Dict, Tuple
 import numpy as np

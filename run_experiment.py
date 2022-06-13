@@ -1,5 +1,5 @@
-from src.train_test import TrainTest
-import src.viz as viz
+from polin.train_test import TrainTest
+import polin.viz as viz
 
 from typing import List, Dict, Tuple
 import numpy as np
@@ -34,7 +34,7 @@ class Experiment():
         
         # self.reward_func = sim_dict['reward_func']
         # self.reward_params_dict = sim_dict['reward_params_dict']
-        
+
         controller_dict = param_dict['controller']
         self.type_name = controller_dict['type_name']
 

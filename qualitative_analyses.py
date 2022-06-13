@@ -1,4 +1,4 @@
-from src.qualitative import Quali
+from polin.qualitative import Quali
 
 import pandas as pd
 import numpy as np

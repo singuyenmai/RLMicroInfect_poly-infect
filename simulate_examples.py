@@ -1,6 +1,6 @@
-from src.bacterial_env import BacterialEnv
-from src.controller import RationalAgent
-import src.viz as viz
+from polin.bacterial_env import BacterialEnv
+from polin.controller import RationalAgent
+import polin.viz as viz
 import numpy as np
 import json
 

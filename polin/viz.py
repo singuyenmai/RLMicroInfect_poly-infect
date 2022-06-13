@@ -13,7 +13,7 @@ os.environ['MPLCONFIGDIR'] = mpldir
 
 import matplotlib.pyplot as plt
 import seaborn as sns
-import src.colors as colchart
+import polin.colors as colchart
 
 def set_plot_style():
     sns.set_style("whitegrid")
