@@ -1,0 +1,35 @@
+{
+    "env": {
+        "ode_params": {
+            "rE": 0.0148,
+            "cE": 0.3088,
+            "rZ": 0.0164,
+            "cZ": 0.3629,
+            "alpha_EZ": -0.019999999999999997,
+            "alpha_ZE": 0.006666666666666667,
+            "ki": 0.005,
+            "kd": 0.003,
+            "micE": 70.0,
+            "micZ": 20.0,
+            "dmaxE": 0.0296,
+            "dmaxZ": 0.0328,
+            "gamma": 3.5
+        },
+        "initial_conditions": {
+            "E": 0.01,
+            "Z": 0.01,
+            "D": 0.0
+        }
+    },
+    "simulation": {
+        "simulation_time": 2520.0,
+        "env_step_time": 360.0
+    },
+    "controller": {
+        "type_name": "Rational",
+        "Din": 100.0,
+        "drug_time": 180.0
+    },
+    "exp_ID": "rational_micZ20.12",
+    "exp_name": "Rational policy - MIC E=70 Z=20 12"
+}
