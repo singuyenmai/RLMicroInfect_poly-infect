@@ -10,8 +10,8 @@
         "kd":0.003,
         "micE": 70.0,
         "micZ": 140.0,
-        "dmaxE": 0.03,
-        "dmaxZ": 0.032,
+        "dmaxE": 0.0296,
+        "dmaxZ": 0.0328,
         "gamma": 3.5
     },
     "initial_conditions":{
