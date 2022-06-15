@@ -22,7 +22,7 @@
         }
     },
     "simulation": {
-        "simulation_time": 2100,
+        "simulation_time": 2520.0,
         "env_step_time": 360.0
     },
     "controller": {
