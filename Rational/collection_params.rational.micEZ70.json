@@ -1,6 +1,6 @@
 {
-    "collection_ID": "rational_sameMIC",
-    "collection_name": "Rational policy - MIC E:Z 1:1",
+    "collection_ID": "rational_micEZ70",
+    "collection_name": "Rational policy - MIC E=Z=70",
     "env": {
         "ode_params": {
             "rE": 0.0148,
@@ -13,8 +13,8 @@
             "kd":0.003,
             "micE": 70.0,
             "micZ": 70.0,
-            "dmaxE": 0.03,
-            "dmaxZ": 0.032,
+            "dmaxE": 0.0296,
+            "dmaxZ": 0.0328,
             "gamma": 3.5
         },
         "initial_conditions":{

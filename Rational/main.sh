@@ -1,7 +1,13 @@
 #!/bin/bash
-python /home/s4278836/polyInfect/parallel_experiments.py -f collection_params.rational.sameMIC.json
+PARALLEL_SCRIPT="/home/s4278836/polyInfect/parallel_experiments.py"
 
-python /home/s4278836/polyInfect/parallel_experiments.py -f collection_params.rational.MIC12.json
+python $PARALLEL_SCRIPT -f collection_params.rational.micEZ70.json
+
+python $PARALLEL_SCRIPT -f collection_params.rational.micZ50.json
+
+python $PARALLEL_SCRIPT -f collection_params.rational.micZ100.json
+
+python $PARALLEL_SCRIPT -f collection_params.rational.micZ140.json
 
 function summarize_t5p(){
     collection=$1;
@@ -18,5 +24,7 @@ function summarize_t5p(){
 }
 export -f summarize_t5p
 
-summarize_t5p rational_sameMIC
-summarize_t5p rational_MIC12
+summarize_t5p rational_micEZ70
+summarize_t5p rational_micZ50
+summarize_t5p rational_micZ100
+summarize_t5p rational_micZ140
