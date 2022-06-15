@@ -74,7 +74,7 @@ def visualize_simulation(env, st='full',
         tmin = t[0]
         tmax = t[-1]
 
-        A = np.zeros((len(t), 1)) # actions
+        A = env.actions # actions
         D = env.sSol[:len(t), -1] # drug conc.
         E = env.sSol[:len(t), 0] # E
         Z = env.sSol[:len(t), 1] # Z
@@ -82,29 +82,26 @@ def visualize_simulation(env, st='full',
         
         line_w = 3.0
         palT = colchart.get_colorBook("myTheme")
-        action_ms = 3.0 if tmax <= (120.0 / tscale)  else 1.0
+        action_ms = 80.0
 
         # Plot actions
-        # ax[0].plot(t, A, lw=0, marker='o', markersize=action_ms, color=palT['ora'])
+        ax[0].scatter(A[:, 0] / tscale, A[:, 1], s=action_ms, marker='^', color=palT['ora'])
 
-        ax[0].set(ylabel='Action')
-        # ax[0].set_ylim(0.0, 1.1)
-        # ax[0].set_yticks([0.0, 1.0])
-        # ax[0].set_yticklabels(["Close", "Open"], fontsize=22)
+        ax[0].set(ylabel='Action\n($\mu$g/mL)')
+        ax[0].set_ylim(-10, 140.0)
+        ax[0].set_yticks([0, 100, 140])
 
         # Plot drug conc.
         ax[1].plot(t, D, lw=line_w, color=palT['tur'])
 
         # Plot MIC
-        ax[1].axhline(y = env.micE, lw=line_w/2, color=palT['tur'], ls='--')
+        if not env.mono:
+            ax[1].axhline(y = env.micZ, lw=line_w/2, color=palT['gre'], ls='--')
+        ax[1].axhline(y = env.micE, lw=line_w/2, color=palT['pur'], ls='--')
 
         ax[1].set(ylabel='Drug\n($\mu$g/mL)')
-        # if np.max(D) <= 250.0:
-        #     ax[1].set_ylim(0.0, 250.0)
-        #     ax[1].set_yticks([0, 125, 250])
-        # else:
-        #     ax[1].set_ylim(0.0, 400.0)
-        #     ax[1].set_yticks([0, 250, 400])
+        ax[1].set_ylim(0.0, 200.0)
+        ax[1].set_yticks([0, 100, 200])
 
         # Plot bacteria densities
         lE, = ax[2].plot(t, E, lw=line_w, color=palT['pur'], label='E')
@@ -113,14 +110,14 @@ def visualize_simulation(env, st='full',
             lM, = ax[2].plot(t, M, lw=line_w, color=palT['grey'], label='Total')
             lZ, = ax[2].plot(t, Z, lw=line_w, color=palT['gre'], label='Z')
             
-            ax[2].legend(handles=[lE, lZ, lM], ncol=3, 
-                         loc='upper left', bbox_to_anchor=(-0.02, 1.02))
+            ax[2].legend(handles=[lE, lZ, lM], ncol=1, 
+                         loc='upper right', bbox_to_anchor=(1.02, 1.02))
         else:
-            ax[2].legend(handles=[lE], loc='upper left', bbox_to_anchor=(-0.02, 1.02))
+            ax[2].legend(handles=[lE], loc='upper right', bbox_to_anchor=(1.02, 1.02))
         
 
         ax[2].set(xlabel = 'Time (hours)', ylabel='OD')
-        ax[2].set_ylim(0.0, 1.2)
+        ax[2].set_ylim(0.0, 1.0)
         ax[2].set_xlim(tmin, tmax)
 
         # set title

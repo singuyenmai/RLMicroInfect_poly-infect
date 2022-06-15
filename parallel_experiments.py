@@ -128,7 +128,7 @@ class ExperimentsCollection():
             param_file = self.collection_dir + exp_ID + "/" + "params." + exp_ID + ".json"
             log_file = self.log_dir + exp_ID + ".log"
 
-            # args = ["echo", JOB_SCRIPT, param_file, log_file] + options
+            # args = ["echo", JOB_SCRIPT, param_file, log_file] + options # this is just for testing the script
             args = ["sbatch", JOB_SCRIPT, param_file, log_file] + options
 
             print(f"Submitting job for experiment {i} ... ")

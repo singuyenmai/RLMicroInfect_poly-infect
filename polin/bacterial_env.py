@@ -18,6 +18,8 @@ class BacterialEnv():
         self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S)) # solution of S
         self.tSol = np.array([0.0]) # solution of time t
 
+        self.actions = np.empty((0, 2), float) # matrix of actions with corresponding timepoints
+
         if self.init_Z == 0.0:
             self.mono = True # if it's a mono-culture env, this is just for visualization
         else:
@@ -117,6 +119,8 @@ class BacterialEnv():
         Din, drug_time = action
         if drug_time > self.sampling_time:
             raise ValueError("Time duration for drug in cannot be longer than sampling time")
+        
+        self.actions = np.append(self.actions, np.array([[self.tSol[-1], Din]]), axis=0)
 
         t_start = self.tSol[-1]
         t_end = t_start + drug_time
