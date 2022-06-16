@@ -42,7 +42,9 @@ for e in exp_names:
         env_param_dict = json.load(f)
     
     env = BacterialEnv(param_dict=env_param_dict, sampling_time=timestep, state_method="cont_E")
-    env.reset_2_coexist_equilibrium()
+    
+    if e != "drug_mono":
+        env.reset_2_coexist_equilibrium()
 
     while env.tSol[-1] < sim_time:
         if (e != "nodrug"):
