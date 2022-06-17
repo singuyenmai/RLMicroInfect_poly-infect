@@ -107,8 +107,8 @@ class Experiment():
         with open(test_pfname, 'w') as pf:
             # pf.write(f'exp_ID\te_return\tescape_time\ttotal_drug_prescribed\tdone_count')
             # pf.write(f'\n{self.exp_ID}\t{tt.e_return}\t{tt.escape_time}\t{tt.total_prescription}\t{tt.done_count}')
-            pf.write(f'exp_ID\tt5p')
-            pf.write(f'\n{self.exp_ID}\t{tt.env.t5p}')
+            pf.write(f'exp_ID\tt5p\ttTiny')
+            pf.write(f'\n{self.exp_ID}\t{tt.env.t5p}\t{tt.env.tTiny}')
         
         # Write simulation data to file
         tt.export_env_data(output_filename = self.exp_dir + "testing." + self.exp_ID)

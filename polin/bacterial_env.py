@@ -27,6 +27,7 @@ class BacterialEnv():
         
         self.five_percent = 0.05 * self.init_E # 5% of init density E
         self.t5p = np.array([]) # timepoints t at which density E = 5% of its initial condition
+        self.tTiny = np.array([]) # timepoints t at which density E = tiny number
         
         self.sampling_time = sampling_time
         
@@ -104,6 +105,12 @@ class BacterialEnv():
         '''
         return S[0] - self.five_percent
     
+    def eventTiny(self, t, S, Din: float) -> float:
+        '''
+        Event for ODE solver: time at which E density == tiny 10**(-4)
+        '''
+        return S[0] - 10**(-4)
+
     def step(self, action: Tuple) -> None:
         '''
         Solves the ODEs system for a time period defined by `sampling_time` param, under the action provided by a controller
@@ -127,12 +134,13 @@ class BacterialEnv():
         init = self.sSol[-1, :]
 
         sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(Din,), 
-                        events=self.event5p, max_step=0.01,
-                        method="LSODA")
+                        events = [self.event5p, self.eventTiny], max_step=0.01,
+                        method = "LSODA")
 
         self.sSol = np.append(self.sSol, sol.y.T[1:, :], axis=0)
         self.tSol = np.append(self.tSol, sol.t[1:])
-        self.t5p = np.append(self.t5p, sol.t_events)
+        self.t5p = np.append(self.t5p, sol.t_events[0])
+        self.tTiny = np.append(self.tTiny, sol.t_events[1])
 
         if (self.sampling_time - drug_time) > 0.0:
             t_start = self.tSol[-1]
@@ -140,8 +148,8 @@ class BacterialEnv():
             init = self.sSol[-1, :]
 
             sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(0.0,), 
-                            events=self.event5p, max_step=0.01,
-                            method="LSODA")
+                            events = [self.event5p, self.eventTiny], max_step=0.01,
+                            method = "LSODA")
 
             solEZ = sol.y[:2, :]
             roundedZero_solEZ = np.where(np.round(solEZ, 5) == 0, 0.0, solEZ)
@@ -149,7 +157,8 @@ class BacterialEnv():
 
             self.sSol = np.append(self.sSol, soly.T[1:, :], axis=0)
             self.tSol = np.append(self.tSol, sol.t[1:])
-            self.t5p = np.append(self.t5p, sol.t_events)
+            self.t5p = np.append(self.t5p, sol.t_events[0])
+            self.tTiny = np.append(self.tTiny, sol.t_events[1])
                 
         self.state = self.get_state(self.state_method)
 
