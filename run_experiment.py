@@ -31,6 +31,7 @@ class Experiment():
 
         self.simulation_time = sim_dict['simulation_time']
         self.env_step_time = sim_dict['env_step_time']
+        self.reset_type = sim_dict['reset_type']
         
         # self.reward_func = sim_dict['reward_func']
         # self.reward_params_dict = sim_dict['reward_params_dict']
@@ -71,7 +72,8 @@ class Experiment():
         
         tt = TrainTest(self.env_param_dict, 
                     #    self.reward_func, self.reward_params_dict,
-                       env_step_time=self.env_step_time, sim_time=self.simulation_time)
+                       env_step_time=self.env_step_time, sim_time=self.simulation_time, 
+                       reset_type=self.reset_type)
         
         if self.type_name == 'Rational':
             

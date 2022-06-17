@@ -193,17 +193,30 @@ class BacterialEnv():
         
         return (E, Z)
     
-    def reset_2_coexist_equilibrium(self) -> None:
+    def reset_2_equilibria(self, eq_type="coexist") -> None:
         '''
-        Resets the system. The initial densities of E & Z are set at the equilibrium of coexistence
+        Resets the system. The initial densities of E & Z are set to either:
+        - the equilibrium of co-existence in co-culture, if parameter `eq_type` is "coexist"; or
+        - the equilibria in their mono-culture, equivalent to co-culture with no interaction, if parameter `eq_type` is "mono"
+        (both of these are in environment without drug)
         '''
-        eqE, eqZ = self.coexist_equilibrium()
+        if eq_type == "coexist":
+            eqE, eqZ = self.coexist_equilibrium() # equilibrium of co-existence in co-culture
+        elif eq_type == "mono":
+            eqE, eqZ = self.cE, self.cZ # equilibria in mono-culture = carrying capacity
+        else:
+            raise ValueError("Parameter `eq_type` can only be either \"coexist\" or \"mono\".")
 
         self.initial_S = np.array([eqE, eqZ, self.init_D])
         
         self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S))
         self.tSol = np.array([0.0])
 
-        self.mono = False # system starts at coexistence equilibrium, so it's co-culture env
+        self.actions = np.empty((0, 2), float)
+
+        self.mono = False # system starts at coexistence equilibrium / carrying capacities, so it's co-culture env
         
         self.five_percent = 0.05 * eqE
+
+        self.t5p = np.array([])
+        self.tTiny = np.array([]) 

@@ -9,11 +9,13 @@ import os
 import warnings
 
 class TrainTest():
-    def __init__(self, env_param_dict: Dict, env_step_time=60.0*6.0, sim_time=60.0*35.0):
+    def __init__(self, env_param_dict: Dict, 
+                 env_step_time=60.0*6.0, sim_time=60.0*35.0, reset_type="coexist"):
         
         # Simulation (integration) parameters
         self.env_step_time = env_step_time # in min (default 6.0h) # time between making drug control decision
         self.simulation_time = sim_time # in min (default 35.0h)
+        self.reset_type = reset_type # which equilibria to reset the system to
 
         # Bacterial environments
         self.env = BacterialEnv(env_param_dict, self.env_step_time)
@@ -33,8 +35,8 @@ class TrainTest():
     
     def simulate(self, explore_rate=0.0, training=False) -> None:
 
-        # reset the env to the coexistence equilibrium
-        self.env.reset_2_coexist_equilibrium()
+        # reset the env
+        self.env.reset_2_equilibria(eq_type=self.reset_type)
         state = self.env.state
 
         while self.env.tSol[-1] < self.simulation_time:
