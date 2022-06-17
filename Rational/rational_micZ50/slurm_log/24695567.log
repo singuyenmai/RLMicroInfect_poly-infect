@@ -1,0 +1,42 @@
+
+
+###############################################################################
+Peregrine Cluster
+Job 24695567 for user 's4278836'
+Finished at: Fri Jun 17 12:48:58 CEST 2022
+
+Job details:
+============
+
+Job ID              : 24695567
+Name                : polyInfect
+User                : s4278836
+Partition           : regular
+Nodes               : pg-node126
+Number of Nodes     : 1
+Cores               : 1
+Number of Tasks     : 1
+State               : COMPLETED
+Submit              : 2022-06-17T12:44:58
+Start               : 2022-06-17T12:48:09
+End                 : 2022-06-17T12:48:58
+Reserved walltime   : 06:00:00
+Used walltime       : 00:00:49
+Used CPU time       : 00:00:47 (efficiency: 97.82%)
+% User (Computation): 98.30%
+% System (I/O)      :  1.70%
+Mem reserved        : 4G
+Max Mem (Node/step) : 118.31M (pg-node126, per node)
+Full Max Mem usage  : 118.31M
+Total Disk Read     : 25.76K
+Total Disk Write    : 419.00 
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/introduction/scientific_output
+
+################################################################################

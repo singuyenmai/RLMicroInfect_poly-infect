@@ -9,23 +9,27 @@ python $PARALLEL_SCRIPT -f collection_params.rational.micZ50.json
 python $PARALLEL_SCRIPT -f collection_params.rational.micZ100.json
 python $PARALLEL_SCRIPT -f collection_params.rational.micZ140.json
 
-function summarize_t5p(){
+function get_features(){
     collection=$1;
     metafile=$collection"/metadata.tsv";
-    output=$collection"/summary_t5p.tsv";
+    output=$collection"/features.tsv";
 
-    echo -e exp_ID"\t"alpha_EZ"\t"alpha_ZE"\t"t5p"\t"t5p_first > $output;
+    echo -e exp_ID"\t"alpha_EZ"\t"alpha_ZE"\t"t5p"\t"t5p_first"\t"tTiny"\t"tTiny_first > $output;
 
     while IFS=$'\t' read -r ID aEZ aZE || [ -n "$ID" ]; do
         pf=$collection"/"$ID"/testing_perf."$ID".tsv";
         awk -v a1=$aEZ -v a2=$aZE '{FS="\t"; OFS="\t"} FNR == 2 { \
-            x=$2; gsub(/[\[\]]/, "", x); split(x, t, " ");  print $1, a1, a2, $2, t[1]}' $pf >> $output;
+            x=$2; gsub(/[\[\]]/, "", x); n=split(x, t, " ");  \
+            y=$3; gsub(/[\[\]]/, "", y); nT=split(y, tT, " "); \
+            if (n > 0) pt=t[1]; else pt="N/A"; \
+            if (nT > 0) ptT=tT[1]; else ptT="N/A"; \
+            print $1, a1, a2, $2, pt, $3, ptT}' $pf >> $output;
     done < <(tail -n +2 $metafile);
 }
-export -f summarize_t5p
+export -f get_features
 
-summarize_t5p rational_micEZ70
-summarize_t5p rational_micZ20
-summarize_t5p rational_micZ50
-summarize_t5p rational_micZ100
-summarize_t5p rational_micZ140
+get_features rational_micEZ70
+get_features rational_micZ20
+get_features rational_micZ50
+get_features rational_micZ100
+get_features rational_micZ140
