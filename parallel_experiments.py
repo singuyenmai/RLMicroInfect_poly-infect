@@ -109,12 +109,14 @@ class ExperimentsCollection():
         print(f"Sucessful. There are in total {count} experiments\n")
     
     def run(self, re_test=False, 
+            test_done_break=False,
             test_qtable_episode='last', test_explore_rate=0.0, 
             test_savefig_format = 'png') -> None:
         '''
         Loops over the experiments and submit jobs to run them
         '''
         options = ["--test_only", str(re_test), 
+                   "--test_done_break", str(test_done_break),
                    "--test_qtable_episode", test_qtable_episode, 
                    "--test_explore_rate", str(test_explore_rate), 
                    "--test_savefig_format", test_savefig_format]
@@ -143,12 +145,12 @@ if __name__ == '__main__':
     parser.add_argument("-f", "--collection_param_file", type=str, required=True)
     parser.add_argument("-re", "--re_test", type=bool, 
                         default=False, required=False)
+    parser.add_argument("-tdb", "--test_done_break", type=bool, 
+                        default=False, required=False)
     parser.add_argument("-tqe", "--test_qtable_episode", 
                         default='last', required=False)
     parser.add_argument("-ter", "--test_explore_rate", type=float, 
                         default=0.0, required=False)
-    # parser.add_argument("-tdb", "--test_done_break", type=bool, 
-    #                     default=False, required=False)
     parser.add_argument("-tsf", "--test_savefig_format", type=str, 
                         default='png', required=False)
 
@@ -160,7 +162,7 @@ if __name__ == '__main__':
         collection.set_directory()
     
     collection.run(re_test = args.re_test, 
+                   test_done_break = args.test_done_break,
                    test_qtable_episode = args.test_qtable_episode,
                    test_explore_rate = args.test_explore_rate,
-                #    test_done_break = args.test_done_break,
                    test_savefig_format = args.test_savefig_format)

@@ -1,6 +1,7 @@
 from polin.bacterial_env import BacterialEnv
 from polin.controller import RationalAgent
 import polin.viz as viz
+
 import numpy as np
 import json
 
@@ -20,7 +21,7 @@ for e in exp_names:
     with open(pfile) as f:
         env_param_dict = json.load(f)
     
-    env = BacterialEnv(param_dict=env_param_dict, sampling_time=sim_time)
+    env = BacterialEnv(param_dict=env_param_dict, step_time=sim_time)
     env.step(action = (0.0, sim_time))
 
     fig = viz.visualize_simulation(env)
@@ -41,7 +42,7 @@ for e in exp_names:
     with open(pfile) as f:
         env_param_dict = json.load(f)
     
-    env = BacterialEnv(param_dict=env_param_dict, sampling_time=timestep, state_method="cont_E")
+    env = BacterialEnv(param_dict=env_param_dict, step_time=timestep, state_method="cont_E")
     
     if e != "drug_mono":
         env.reset_2_coexist_equilibrium()
