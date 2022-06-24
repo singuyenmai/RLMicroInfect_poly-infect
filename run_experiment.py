@@ -11,7 +11,7 @@ import argparse
 class Experiment():
     def __init__(self, exp_param_file: str) -> None:
         
-        self.defined_controllers = ["Rational", "Qlearning"]
+        self.defined_controllers = ["Rational", "QLearning"]
 
         with open(exp_param_file) as f:
             param_dict = json.load(f)
@@ -35,7 +35,7 @@ class Experiment():
         if self.controller_type not in self.defined_controllers:
             raise ValueError(f'Controller type name should be in this list: {self.defined_controllers}')
 
-        if self.controller_type == 'Qlearning':
+        if self.controller_type == 'QLearning':
             
             self.QLearningAgent_param_dict = controller_dict['agent']
 
@@ -69,7 +69,7 @@ class Experiment():
         
         else:
 
-            tt.set_Qlearning_agent(self.QLearningAgent_param_dict)
+            tt.set_QLearning_agent(self.QLearningAgent_param_dict)
 
             perf_filename = self.exp_dir + 'training_performance.tsv'
 
@@ -85,7 +85,7 @@ class Experiment():
             ep = self.n_episodes - 1 if test_qtable_episode == 'last' else test_qtable_episode
 
             learned_qtable_file = self.exp_dir + 'learned_qtables/QLearningAgent_values.ep' + str(ep) + '.npy'
-            tt.test_Qlearning(learned_qtable_file = learned_qtable_file, 
+            tt.test_QLearning(learned_qtable_file = learned_qtable_file, 
                               explore_rate = test_explore_rate)
             
             # Plot policy of the Q-learning agent

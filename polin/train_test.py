@@ -40,11 +40,11 @@ class TrainTest():
     def test_rational(self, Din = 100.0, drug_time = 60.0*3) -> None:
         
         self.agent = RationalAgent(Din = Din, drug_time = drug_time)
-        self.env.set_state_method("cont_E")
+        self.env.reset_state_method(state_method = 'cont_E', n_states = None)
 
         self.simulate(sim_time=self.simulation_time, done_break = self.test_done_break)
     
-    def set_Qlearning_agent(self, param_dict: Dict) -> None:
+    def set_QLearning_agent(self, param_dict: Dict) -> None:
         n_states = param_dict['n_states']
         n_actions = param_dict['n_actions']
         
@@ -58,19 +58,19 @@ class TrainTest():
                                     Din_options, drug_time, 
                                     gamma, alpha)
     
-    def is_agent_Qlearning(self) -> None:
+    def is_agent_QLearning(self) -> None:
         
         if self.agent is None:
-            raise RuntimeError('Agent is not set. Please run method: set_Qlearning_agent.')
-        elif self.agent.type_name != 'Qlearning':
-            raise RuntimeError('Agent is not Qlearning. Please run method: set_Qlearning_agent.')
+            raise RuntimeError('Agent is not set. Please run method: set_QLearning_agent.')
+        elif self.agent.type_name != 'QLearning':
+            raise RuntimeError('Agent is not QLearning. Please run method: set_QLearning_agent.')
         
         return True
     
     def train_Qlearing(self, n_episodes: int, decay: float, 
                        episode_time_max: float, exp_dir: str) -> None:
 
-        self.is_agent_Qlearning()
+        self.is_agent_QLearning()
 
         perf_filename = exp_dir + 'training_performance.tsv'
 
@@ -86,8 +86,7 @@ class TrainTest():
         with open(perf_filename, 'w') as pf:
             pf.write(f'episode\texplore_rate\te_return\tt5p\ttTiny\ttotal_drug_in')
 
-        self.env.set_state_method('disc_EZ')
-        self.env.set_n_states(self.agent.n_states)
+        self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
 
         for episode in range(n_episodes):
 
@@ -105,9 +104,9 @@ class TrainTest():
             if episode % 10 == 0:
                 print(f'episode: {episode} \t| explore_rate: {round(explore_rate, 3)} \t| return: {round(self.e_return, 3)}')
     
-    def test_Qlearning(self, learned_qtable_file=None, explore_rate=0.0) -> None:
+    def test_QLearning(self, learned_qtable_file=None, explore_rate=0.0) -> None:
         
-        self.is_agent_Qlearning()
+        self.is_agent_QLearning()
         
         if learned_qtable_file is not None:
             
@@ -116,8 +115,7 @@ class TrainTest():
 
         print(f'\nTest on agent with Q-table:\n{self.agent.values}\n')
         
-        self.env.set_state_method('disc_EZ')
-        self.env.set_n_states(self.agent.n_states)
+        self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
 
         self.simulate(sim_time = self.simulation_time, done_break = self.test_done_break, 
                       explore_rate = explore_rate, training = False)
@@ -132,10 +130,13 @@ class TrainTest():
         # reset the env
         self.env.reset_2_equilibria(eq_type=self.reset_type)
         state = self.env.state
+        
+        # reset the cumulative return
+        self.e_return = 0.0
 
         while self.env.tSol[-1] < sim_time:
             
-            if self.agent.type_name == "Qlearning":
+            if self.agent.type_name == "QLearning":
                 action_index, action = self.agent.get_action(state, explore_rate)
             
             if self.agent.type_name == "Rational":

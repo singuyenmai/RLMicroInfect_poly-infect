@@ -45,15 +45,15 @@ def visualize_train(train_perf_file):
         ax01.plot(df['episode'], df['explore_rate'], 
                   lw=2, color=palT['exp'], label='Explore rate')
         
-        # Plot total number of times drug valve opened
-        # ax[1].plot(df['episode'], df['total_drug_prescribed'], 
-        #            lw=line_w, marker='o', markersize=3,
-        #            color=palE['yel'])
+        # Plot total drug in
+        ax[1].plot(df['episode'], df['total_drug_in'], 
+                   lw=line_w, marker='o', markersize=3,
+                   color=palT['tur'])
 
         # Set axis labels
         ax[0].set(xlabel='Episode', ylabel='Return')
         ax01.set(ylabel='Explore rate')
-        # ax[1].set(xlabel='Episode', ylabel='Total times\ndrug valve opened')
+        ax[1].set(xlabel='Episode', ylabel='Cumulative drug in ($\mu$g/mL)')
 
         # Add legends
         ax[0].legend(bbox_to_anchor=(1.0, 1.0), loc='lower right')

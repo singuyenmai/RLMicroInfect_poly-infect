@@ -30,7 +30,7 @@ class BacterialEnv():
         self.tSol = np.array([0.0]) # solution of time t
 
         self.actions = np.empty((0, 2), float) # matrix of actions with corresponding timepoints
-        self.total_drug_in = 0.0 # cummulative drug concentration "flowed" in
+        self.total_drug_in = 0.0 # cumulative drug concentration "flowed" in
 
         if self.init_Z == 0.0:
             self.mono = True # if it's a mono-culture env, this is just for visualization
@@ -60,7 +60,7 @@ class BacterialEnv():
         self.OD2state = None # distance (in density unit) between 2 consecutive states, 
                              # also the "exchange rate" to convert from density to discrete state
 
-        self.state = self.get_state(self.state_method) # observable state to the controller
+        self.state = self.get_state() # observable state to the controller
 
     def set_params(self, param_dict: Dict) -> None:
         '''
@@ -99,24 +99,21 @@ class BacterialEnv():
         else:
             raise ValueError('Supplied reward function name is not (yet) defined')
 
-    def set_state_method(self, state_method: str) -> None:
+    def reset_state_method(self, state_method: str, n_states: int) -> None:
         '''
-        Sets the method to return state given the method name
+        Resets the method to return state given the method name
         Parameters:
             state_method (str): name of the state method to be used
+            n_states (int or None): number of states to set to, int when `state_method` is "disc_EZ", None when "cont_E"
         '''
         if state_method not in self.defined_state_methods:
             raise ValueError("Method to derive observable state is not yet defined")
         else:
             self.state_method = state_method
-    
-    def set_n_states(self, n_states: int) -> None:
-        '''
-        Sets the number of observable states, needed when `state_method` is "disc_EZ"
-        Parameters:
-            n_states (int): number of states to set to
-        '''
+        
         self.n_states = n_states
+        # update the env state accordingly to the new method
+        self.state = self.get_state()
     
     def ODEsys(self, t, S, Din: float) -> List:
         '''
@@ -208,23 +205,21 @@ class BacterialEnv():
             self.t5p = np.append(self.t5p, sol.t_events[0])
             self.tTiny = np.append(self.tTiny, sol.t_events[1])
                 
-        self.state = self.get_state(self.state_method)
+        self.state = self.get_state()
 
         reward, done = self.get_reward(action, self.sSol, self.tSol, **self.reward_kwargs)
 
         return self.state, reward, done
     
-    def get_state(self, method: str):
+    def get_state(self):
         '''
-        Returns the "current" state of the system/env for the controller to make decisions.
-        Parameters:
-            method (str): name of the method to compute the state of the system
-        Returns: the type of the return depends on the method of deriving the state 
+        Returns the "current" state of the system/env for the controller to make decisions:
+            state: float if `state_method` is "cont_E", int if "disc_EZ"
         '''
-        if method == "cont_E": # returns the most recent density of species E (continuous value)
-            return self.sSol[-1, 0]
+        if self.state_method == "cont_E": # returns the most recent density of species E (continuous value)
+            state = self.sSol[-1, 0]
         
-        elif method == "disc_EZ":
+        elif self.state_method == "disc_EZ":
             if self.n_states is None:
                 raise RuntimeError(f'n_states should be defined for \"{method}\" method')
             elif not isinstance(self.n_states, int):
@@ -246,7 +241,8 @@ class BacterialEnv():
             # with E_disc as row index and Z_disc as column index
             # state = S[E_disc, Z_disc]
             state = int(E_disc * (N_disc + 1) + Z_disc)
-            return state
+        
+        return state
     
     def coexist_equilibrium(self) -> Tuple:
         '''
@@ -291,3 +287,6 @@ class BacterialEnv():
 
         self.t5p = np.array([])
         self.tTiny = np.array([]) 
+        
+        # update observable state to the controller
+        self.state = self.get_state()

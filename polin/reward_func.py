@@ -12,6 +12,8 @@ def minED(action, sSol, tSol, **kwargs):
 
     reward = w_E * (1.0 - E/init_E) - w_D * Din / Din_max
 
-    done=False
+    done = True if E == init_E else False # this is to enforce the QLearning controller to 
+                                          # presribe drug from the beginning of simulation &
+                                          # also implying treatment failure if E goes back to initial density
 
     return reward, done

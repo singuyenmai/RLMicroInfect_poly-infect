@@ -32,7 +32,7 @@ class QLearningAgent():
                  Din_options: Tuple, drug_time = 60.0*3, 
                  gamma=0.9, alpha=0.01):
         
-        self.type_name = 'Qlearning'
+        self.type_name = 'QLearning'
 
         self.n_states = n_states
         self.n_actions = n_actions
