@@ -182,7 +182,11 @@ class BacterialEnv():
                         events = [self.event5p, self.eventTiny], max_step=0.01,
                         method = "LSODA")
 
-        self.sSol = np.append(self.sSol, sol.y.T[1:, :], axis=0)
+        solEZ = sol.y[:2, :]
+        roundedZero_solEZ = np.where(np.round(solEZ, 5) == 0, 0.0, solEZ)
+        soly = np.append(roundedZero_solEZ, sol.y[[-1], :], axis=0)
+
+        self.sSol = np.append(self.sSol, soly.T[1:, :], axis=0)
         self.tSol = np.append(self.tSol, sol.t[1:])
         self.t5p = np.append(self.t5p, sol.t_events[0])
         self.tTiny = np.append(self.tTiny, sol.t_events[1])
@@ -230,11 +234,11 @@ class BacterialEnv():
             Z = self.sSol[-1, 1]
 
             # discretizing bacterial densities
-            N_disc = int(math.sqrt(self.n_states) - 1)
+            N_disc = int(math.sqrt(self.n_states) - 2)
             self.OD2state = (self.growth_bounds[1] - self.growth_bounds[0]) / N_disc
 
-            E_disc = int(E // self.OD2state)
-            Z_disc = int(Z // self.OD2state)
+            E_disc = int(E // self.OD2state + 1) if E > 0.0 else 0
+            Z_disc = int(Z // self.OD2state + 1) if Z > 0.0 else 0
             
             # discrete state is a value in the matrix 
             # S = np.arange(self.n_states).reshape(math.sqrt(self.n_states), math.sqrt(self.n_states))

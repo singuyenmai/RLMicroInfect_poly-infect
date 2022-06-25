@@ -8,8 +8,6 @@ import subprocess
 
 from copy import deepcopy
 
-JOB_SCRIPT = "/home/s4278836/polyInfect/peregrine_job.sh"
-
 class ExperimentsCollection():
     def __init__(self, collection_param_file: str) -> None:
 
@@ -108,8 +106,8 @@ class ExperimentsCollection():
         
         print(f"Sucessful. There are in total {count} experiments\n")
     
-    def run(self, re_test=False, 
-            test_done_break=False,
+    def run(self, local=False,
+            re_test=False, test_done_break=False,
             test_qtable_episode='last', test_explore_rate=0.0, 
             test_savefig_format = 'png') -> None:
         '''
@@ -123,7 +121,22 @@ class ExperimentsCollection():
         
         N_exp = len(self.alpha_EZ_arr) * len(self.alpha_ZE_arr)
 
-        global JOB_SCRIPT
+        if not local:
+            
+            JOB_SCRIPT = "/home/s4278836/polyInfect/peregrine_job.sh"
+        
+        else:
+            
+            confirmation = input("Argument --local has been provided, which means multiple experiments would be run on local machine. \
+                                  Are you sure to continue? [y/n] ")
+            while confirmation not in ["y", "n"]:
+                confirmation = input("Please only answer either \"y\" (for Yes) or \"n\" (for No) and type your answer again: ")
+            
+            if confirmation == "y":
+                JOB_SCRIPT = "/home/singuyen/Study/SCB/1.MSc_projects/Second_project/polyInfect/run_experiment.py"
+            else:
+                return
+        
         for i in range(N_exp):
             
             exp_ID = self.param_dict['collection_ID'] + "." + str(i)
@@ -131,9 +144,12 @@ class ExperimentsCollection():
             log_file = self.log_dir + exp_ID + ".log"
 
             # args = ["echo", JOB_SCRIPT, param_file, log_file] + options # this is just for testing the script
-            args = ["sbatch", JOB_SCRIPT, param_file, log_file] + options
+            if not local:
+                args = ["sbatch", JOB_SCRIPT, param_file, log_file] + options
+            else:
+                args = ["python", JOB_SCRIPT, "-f", param_file] + options
 
-            print(f"Submitting job for experiment {i} ... ")
+            print(f"Submitting job (if local==False) / Running (if local==True) for experiment {i} ... ")
             proc = subprocess.Popen(args, cwd=self.collection_dir)
             proc.wait()
             print("Done\n")
@@ -143,6 +159,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Running a collection of experiments supplied with a json parameter file")
     
     parser.add_argument("-f", "--collection_param_file", type=str, required=True)
+    
+    parser.add_argument("--local", action='store_true')
+    
     parser.add_argument("-re", "--re_test", type=bool, 
                         default=False, required=False)
     parser.add_argument("-tdb", "--test_done_break", type=bool, 
@@ -161,7 +180,8 @@ if __name__ == '__main__':
     if not args.re_test:
         collection.set_directory()
     
-    collection.run(re_test = args.re_test, 
+    collection.run(local = args.local,
+                   re_test = args.re_test, 
                    test_done_break = args.test_done_break,
                    test_qtable_episode = args.test_qtable_episode,
                    test_explore_rate = args.test_explore_rate,

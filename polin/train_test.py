@@ -84,7 +84,7 @@ class TrainTest():
         qtable_filename = qtable_dir + 'QLearningAgent_values.ep'
 
         with open(perf_filename, 'w') as pf:
-            pf.write(f'episode\texplore_rate\te_return\tt5p\ttTiny\ttotal_drug_in')
+            pf.write(f'episode\texplore_rate\te_return\tt5p_first\ttTiny_first\ttotal_drug_in')
 
         self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
 
@@ -97,10 +97,12 @@ class TrainTest():
             
             with open(qtable_filename + str(episode) + '.npy', 'wb') as f:
                 np.save(f, self.agent.values)
-                    
+            
+            t5p_first = self.env.t5p[0] if len(self.env.t5p) > 0 else "N/A"
+            tTiny_first = self.env.tTiny[0] if len(self.env.tTiny) > 0 else "N/A"
             with open(perf_filename, 'a') as pf:
-                pf.write(f'\n{episode}\t{explore_rate}\t{self.e_return}\t{self.env.t5p}\t{self.env.tTiny}\t{self.env.total_drug_in}')
-
+                pf.write(f'\n{episode}\t{explore_rate}\t{self.e_return}\t{t5p_first}\t{tTiny_first}\t{self.env.total_drug_in}')
+            
             if episode % 10 == 0:
                 print(f'episode: {episode} \t| explore_rate: {round(explore_rate, 3)} \t| return: {round(self.e_return, 3)}')
     
