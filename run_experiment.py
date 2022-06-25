@@ -115,10 +115,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Running experiment supplied with a json parameter file")
     
     parser.add_argument("-f", "--exp_param_file", type=str, required=True)
-    parser.add_argument("-to", "--test_only", type=bool, 
-                        default=False, required=False)
-    parser.add_argument("-tdb", "--test_done_break", type=bool, 
-                        default=False, required=False)
+    
+    parser.add_argument("-to", "--test_only", action='store_true') # default is False
+    parser.add_argument("-tdb", "--test_done_break", action='store_true') # default is False
+
     parser.add_argument("-tqe", "--test_qtable_episode", 
                         default='last', required=False)
     parser.add_argument("-ter", "--test_explore_rate", type=float, 

@@ -46,7 +46,7 @@ class ExperimentsCollection():
             arr: array of interaction coefficients
         '''
         if (N % 2 == 0):
-            raise ValueError("The number of alpha values must be an odd number > 3")
+            raise ValueError("The number of alpha values must be an odd number")
         
         n = int((N + 1)/2)
         
@@ -113,11 +113,14 @@ class ExperimentsCollection():
         '''
         Loops over the experiments and submit jobs to run them
         '''
-        options = ["--test_only", str(re_test), 
-                   "--test_done_break", str(test_done_break),
-                   "--test_qtable_episode", test_qtable_episode, 
+        options = ["--test_qtable_episode", str(test_qtable_episode), 
                    "--test_explore_rate", str(test_explore_rate), 
                    "--test_savefig_format", test_savefig_format]
+        if re_test:
+            options = options + ["--test_only"]
+        
+        if test_done_break:
+            options = options + ["--test_done_break"]
         
         N_exp = len(self.alpha_EZ_arr) * len(self.alpha_ZE_arr)
 
@@ -160,16 +163,16 @@ if __name__ == '__main__':
     
     parser.add_argument("-f", "--collection_param_file", type=str, required=True)
     
-    parser.add_argument("--local", action='store_true')
+    parser.add_argument("--local", action='store_true') # default is False
     
-    parser.add_argument("-re", "--re_test", type=bool, 
-                        default=False, required=False)
-    parser.add_argument("-tdb", "--test_done_break", type=bool, 
-                        default=False, required=False)
+    parser.add_argument("-re", "--re_test", action='store_true') # default is False
+    parser.add_argument("-tdb", "--test_done_break", action='store_true') # default is False
+    
     parser.add_argument("-tqe", "--test_qtable_episode", 
                         default='last', required=False)
     parser.add_argument("-ter", "--test_explore_rate", type=float, 
                         default=0.0, required=False)
+    
     parser.add_argument("-tsf", "--test_savefig_format", type=str, 
                         default='png', required=False)
 
