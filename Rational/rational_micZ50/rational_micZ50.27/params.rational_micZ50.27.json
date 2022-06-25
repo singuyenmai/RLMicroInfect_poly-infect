@@ -29,7 +29,7 @@
         "reward_kwargs": {
             "w_E": 1.0,
             "Din_max": 120.0,
-            "w_D": 0.5
+            "w_D": 0.2
         }
     },
     "controller": {

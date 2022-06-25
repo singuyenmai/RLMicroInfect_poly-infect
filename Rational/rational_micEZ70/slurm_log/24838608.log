@@ -1,0 +1,47 @@
+
+
+###############################################################################
+Peregrine Cluster
+Job 24838608 for user 's4278836'
+Finished at: Sat Jun 25 15:50:20 CEST 2022
+
+Job details:
+============
+
+Job ID              : 24838608
+Name                : polyInfect
+User                : s4278836
+Partition           : regular
+Nodes               : pg-node189
+Number of Nodes     : 1
+Cores               : 1
+Number of Tasks     : 1
+State               : COMPLETED
+Submit              : 2022-06-25T15:47:01
+Start               : 2022-06-25T15:47:06
+End                 : 2022-06-25T15:50:19
+Reserved walltime   : 1-00:00:00
+Used walltime       :   00:03:13
+Used CPU time       :   00:00:46 (efficiency: 24.20%)
+% User (Computation): 96.04%
+% System (I/O)      :  3.96%
+Mem reserved        : 4G
+Max Mem (Node/step) : 114.51M (pg-node189, per node)
+Full Max Mem usage  : 114.51M
+Total Disk Read     : 25.76K
+Total Disk Write    : 424.00 
+Hints and tips      :
+ 1) The program efficiency is low.
+    Check the file in- and output pattern of your application.
+ *) For more information on these issues see:
+    https://wiki.hpc.rug.nl/peregrine/additional_information/job_hints
+
+
+Acknowledgements:
+=================
+
+Please see this page for information about acknowledging Peregrine in your publications:
+
+https://wiki.hpc.rug.nl/peregrine/introduction/scientific_output
+
+################################################################################
