@@ -88,6 +88,8 @@ class TrainTest():
 
         self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
 
+        print(f"Training for {n_episodes} episodes ...\n")
+
         for episode in range(n_episodes):
 
             explore_rate = self.agent.get_rate(episode, decay)
@@ -115,16 +117,21 @@ class TrainTest():
             learned_qtable = np.load(learned_qtable_file)
             self.agent.set_values(learned_qtable)
 
-        print(f'\nTest on agent with Q-table:\n{self.agent.values}\n')
+        print(f'\nTesting on agent with Q-table:\n{self.agent.values}\n')
         
         self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
 
         self.simulate(sim_time = self.simulation_time, done_break = self.test_done_break, 
                       explore_rate = explore_rate, training = False)
         
-        print("Test learned Q-learning policy\n")
-        print(f'e_return\tescape_time\ttotal_drug_prescribed\tdone_count')
-        print(f'\n{self.e_return}\t{self.env.t5p}\t{self.env.tTiny}\t{self.env.total_drug_in}')
+        print("Learned Q-learning policy tested\n")
+        
+        print(f'e_return\tt5p_first\ttTiny_first\ttotal_drug_in')
+
+        t5p_first = self.env.t5p[0] if len(self.env.t5p) > 0 else "N/A"
+        tTiny_first = self.env.tTiny[0] if len(self.env.tTiny) > 0 else "N/A"
+
+        print(f'\n{self.e_return}\t{t5p_first}\t{tTiny_first}\t{self.env.total_drug_in}')
 
     def simulate(self, sim_time: float, done_break: bool, 
                  explore_rate=0.0, training=False) -> None:
