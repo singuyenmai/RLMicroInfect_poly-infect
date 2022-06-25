@@ -31,13 +31,13 @@
         "reward_kwargs": {
             "w_E": 1.0,
             "Din_max": 120.0,
-            "w_D": 0.5
+            "w_D": 0.2
         }
     },
     "controller": {
         "type_name": "QLearning",
         "agent": {
-            "n_states": 441,
+            "n_states": 484,
             "n_actions": 5,
             "Din_options": [0.0, 50.0, 70.0, 100.0, 120.0],
             "drug_time": 180.0,
@@ -45,8 +45,8 @@
             "alpha": 0.01
         },
         "training": {
-            "n_episodes": 1000,
-            "decay": 100,
+            "n_episodes": 1500,
+            "decay": 150,
             "episode_time_max": 7200.0
         }
     }
