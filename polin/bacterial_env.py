@@ -244,7 +244,7 @@ class BacterialEnv():
             # S = np.arange(self.n_states).reshape(math.sqrt(self.n_states), math.sqrt(self.n_states))
             # with E_disc as row index and Z_disc as column index
             # state = S[E_disc, Z_disc]
-            state = int(E_disc * (N_disc + 1) + Z_disc)
+            state = int(E_disc * math.sqrt(self.n_states) + Z_disc)
         
         return state
     
