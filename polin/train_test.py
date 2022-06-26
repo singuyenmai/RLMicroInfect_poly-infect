@@ -47,6 +47,7 @@ class TrainTest():
     def set_QLearning_agent(self, param_dict: Dict) -> None:
         n_states = param_dict['n_states']
         n_actions = param_dict['n_actions']
+        n_states_dimensions = param_dict['n_states_dimensions']
         
         Din_options = tuple(param_dict['Din_options'])
         drug_time = param_dict['drug_time']
@@ -54,7 +55,7 @@ class TrainTest():
         gamma = param_dict['gamma']
         alpha = param_dict['alpha']
         
-        self.agent = QLearningAgent(n_states, n_actions, 
+        self.agent = QLearningAgent(n_states, n_actions, n_states_dimensions,
                                     Din_options, drug_time, 
                                     gamma, alpha)
     
@@ -86,7 +87,8 @@ class TrainTest():
         with open(perf_filename, 'w') as pf:
             pf.write(f'episode\texplore_rate\te_return\tt5p_first\ttTiny_first\ttotal_drug_in')
 
-        self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
+        state_method = 'disc_E' if self.agent.n_states_dimensions == 1 else 'disc_EZ'
+        self.env.reset_state_method(state_method = state_method, n_states = self.agent.n_states)
 
         print(f"Training for {n_episodes} episodes ...\n")
 
@@ -119,7 +121,8 @@ class TrainTest():
 
         print(f'\nTesting on agent with Q-table:\n{self.agent.values}\n')
         
-        self.env.reset_state_method(state_method = 'disc_EZ', n_states = self.agent.n_states)
+        state_method = 'disc_E' if self.agent.n_states_dimensions == 1 else 'disc_EZ'
+        self.env.reset_state_method(state_method = state_method, n_states = self.agent.n_states)
 
         self.simulate(sim_time = self.simulation_time, done_break = self.test_done_break, 
                       explore_rate = explore_rate, training = False)

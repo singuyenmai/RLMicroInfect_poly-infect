@@ -22,13 +22,14 @@ class QLearningAgent():
     Initialized with:
         n_states (int): the number of environment states observable to the agent
         n_actions (int): the number of actions that the agent can choose from
+        n_states_dimensions (int): 1 or 2. 1 if states depend on E only, 2 if states depend on both E & Z
         Din_options (tuple): tuple of available "flow in" drug concentrations that the agent can choose from.
                                 The number of options should be equal to the number of actions.
         drug_time (float): time for "flow in" of drug
         gamma (float): discount rate
         alpha (float): learning rate
     '''
-    def __init__(self, n_states: int, n_actions: int, 
+    def __init__(self, n_states: int, n_actions: int, n_states_dimensions: int,
                  Din_options: Tuple, drug_time = 60.0*3, 
                  gamma=0.9, alpha=0.01):
         
@@ -37,6 +38,11 @@ class QLearningAgent():
         self.n_states = n_states
         self.n_actions = n_actions
         self.values = np.zeros((n_states, n_actions))
+
+        if n_states_dimensions not in [1, 2]:
+            raise ValueError("The number of states dimensions can only be either 1 or 2")
+        else:
+            self.n_states_dimensions = n_states_dimensions
 
         if len(Din_options) != n_actions:
             raise ValueError("The number of Din options should be equal to the number of actions")

@@ -47,7 +47,7 @@ class BacterialEnv():
         self.reward_kwargs = reward_kwargs # kwargs for the reward function
 
         # method to derive observable state for the controller
-        self.defined_state_methods = ["cont_E", "disc_EZ"]
+        self.defined_state_methods = ["cont_E", "disc_EZ", "disc_E"]
         
         if state_method not in self.defined_state_methods:
             raise ValueError(f"Method to derive observable state is not in the list of defined methods: {self.defined_state_methods}")
@@ -223,12 +223,13 @@ class BacterialEnv():
         if self.state_method == "cont_E": # returns the most recent density of species E (continuous value)
             state = self.sSol[-1, 0]
         
-        elif self.state_method == "disc_EZ":
+        if self.state_method == "disc_EZ" or self.state_method == "disc_E":
             if self.n_states is None:
                 raise RuntimeError(f'n_states should be defined for \"{method}\" method')
             elif not isinstance(self.n_states, int):
                 raise ValueError("n_states should be an integer")
-
+        
+        if self.state_method == "disc_EZ":
             # "current" bacterial densities
             E = self.sSol[-1, 0]
             Z = self.sSol[-1, 1]
@@ -245,6 +246,17 @@ class BacterialEnv():
             # with E_disc as row index and Z_disc as column index
             # state = S[E_disc, Z_disc]
             state = int(E_disc * math.sqrt(self.n_states) + Z_disc)
+        
+        if self.state_method == "disc_E":
+            # "current" bacterial density
+            E = self.sSol[-1, 0]
+
+            # discretizing bacterial density
+            N_disc = int(self.n_states - 2)
+            self.OD2state = (self.growth_bounds[1] - self.growth_bounds[0]) / N_disc
+
+            E_disc = int(E // self.OD2state + 1) if E > 0.0 else 0
+            state = E_disc
         
         return state
     
