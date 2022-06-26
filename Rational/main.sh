@@ -16,8 +16,19 @@ function get_features(){
 
     echo -e exp_ID"\t"alpha_EZ"\t"alpha_ZE"\t"e_return"\t"t5p"\t"t5p_first"\t"tTiny"\t"tTiny_first"\t"total_drug_in > $output;
 
-    while IFS=$'\t' read -r ID aEZ aZE || [ -n "$ID" ]; do
-        pf=$collection"/"$ID"/testing_perf."$ID".tsv";
+    while IFS=$'\t' read -r ID aEZ aZE || [ -n "$ID" ]; do #loop over the experiments in the collection
+
+        pf=$collection"/"$ID"/testing_perf."$ID".tsv"; #testing performance file of each experiment
+
+        l=$(cat $pf | wc -l); #get the number of lines of the file
+        if [ $l -gt 2 ]; then #if there are more than 2 lines, it's because one of the array stored was too long and resulted in line break
+            tmp="tmp.tsv";
+            head -n 1 $pf > $tmp; 
+            tail -n +2 $pf | tr --delete '\n' >> $tmp; #remove the line breaks within arrays
+            mv $tmp $pf; 
+        fi;
+
+        # get the first t5p and the first tTiny, then print data into a pretty form
         awk -v a1=$aEZ -v a2=$aZE '{FS="\t"; OFS="\t"} FNR == 2 { \
             x=$3; gsub(/[\[\]]/, "", x); n=split(x, t, " ");  \
             y=$4; gsub(/[\[\]]/, "", y); nT=split(y, tT, " "); \
