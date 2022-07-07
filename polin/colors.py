@@ -14,7 +14,9 @@ colorBook = {
         "ora": "#FE7F2D",
         "red": "#DD614A",
         "ruby": "#A20021",
-        "exp": "#9b3c96"
+        "exp": "#9b3c96",
+        "lightblue": "#42b0e3",
+        "pink": "#fa358d"
     }
 } # Reference: https://github.com/BlakeRMills/MetBrewer
     

@@ -30,7 +30,7 @@ class BacterialEnv():
         self.tSol = np.array([0.0]) # solution of time t
 
         self.actions = np.empty((0, 2), float) # matrix of actions with corresponding timepoints
-        self.total_drug_in = 0.0 # cumulative drug concentration "flowed" in
+        self.total_drug_in = 0.0 # cumulative drug "absorbed" / "flowed" in
 
         if self.init_Z == 0.0:
             self.mono = True # if it's a mono-culture env, this is just for visualization
@@ -289,6 +289,8 @@ class BacterialEnv():
         else:
             raise ValueError("Parameter `eq_type` can only be either \"coexist\" or \"mono\".")
 
+        self.init_E = eqE
+        self.init_Z = eqZ
         self.initial_S = np.array([eqE, eqZ, self.init_D])
         
         self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S))

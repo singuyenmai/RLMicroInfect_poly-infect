@@ -79,7 +79,8 @@ class Experiment():
             elif not os.path.exists(perf_filename):
                 raise RuntimeError('Training performance file does not exist. Please run training.')
             
-            train_fig = viz.visualize_train(train_perf_file = perf_filename)            
+            train_fig = viz.visualize_train(train_perf_file = perf_filename, 
+                                            episode_time_max = self.episode_time_max)            
             train_fig.savefig(self.exp_dir + "training_performance.png", bbox_inches='tight')
             
             ep = self.n_episodes - 1 if test_qtable_episode == 'last' else test_qtable_episode
@@ -89,7 +90,7 @@ class Experiment():
                               explore_rate = test_explore_rate)
             
             # Plot policy of the Q-learning agent
-            fig_Qpolicy = tt.agent.visualize_policy(OD2state = tt.env.OD2state)
+            fig_Qpolicy = tt.agent.visualize_policy(initE = tt.env.init_E, OD2state = tt.env.OD2state)
             
             fig_Qpolicy_name = self.exp_dir + "Qpolicy." + self.exp_ID + "." + test_savefig_format
             fig_Qpolicy.savefig(fig_Qpolicy_name, bbox_inches='tight')

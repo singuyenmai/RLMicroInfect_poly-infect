@@ -121,7 +121,7 @@ class QLearningAgent():
         self.values = qtable
         self.n_states, self.n_actions = np.shape(qtable)
     
-    def visualize_policy(self, OD2state=1.0) -> plt.figure:
+    def visualize_policy(self, initE: float, OD2state: float) -> plt.figure:
         '''
         Visualizes the policy of the agent
         Parameters:
@@ -134,64 +134,83 @@ class QLearningAgent():
         plt.rc('font', **font)
         legnd = {'fontsize': 18, 'handlelength': 1.5}
         plt.rc('legend', **legnd)
+        mathtext = {'mathtext.default': 'it'} 
+        plt.rcParams.update(mathtext)
 
-        pal = colchart.get_colorBook("Egypt")
+        if self.n_states_dimensions == 2:
+            return self.visualize_policy_2D(initE = initE, OD2state = OD2state)
+        else:
+            return self.visualize_policy_1D(initE = initE, OD2state = OD2state)
 
-        fig, ax = plt.subplots(1, 3, figsize=(7.5*2 + 0.2, 3), 
+    def visualize_policy_1D(self, initE: float, OD2state: float) -> plt.figure:
+        palE = colchart.get_colorBook("Egypt")
+        palT = colchart.get_colorBook("myTheme")
+
+        fig, ax = plt.subplots(1, 3, figsize=(7.5*2 + 0.2, 4), 
                                gridspec_kw={'wspace': 0.1,
                                'width_ratios': [0.49, 0.49, 0.02]})
         
-        # xlims = (0, self.n_states)
-        # xts = np.arange(self.n_states+1)
-        # ods = np.arange(self.n_states+1) * OD2state
-        # ylims = (-0.5, self.n_actions-0.5)
-        # yts1 = [i for i in range(self.n_actions)]
-        # yts2 = [i+0.5 for i in range(self.n_actions)]
-        # X_Pmax = Pmax / OD2state
-        # X_Et = (Pmax + 0.025) / OD2state
+        xlims = (0, self.n_states)
+        xts = np.linspace(0.5, self.n_states-0.5, 5)
+        ods = np.linspace(0.0, self.n_states-2, 5) * OD2state
 
-        # X = [] # state
-        # Y1 = [] # action
+        ylims = (-0.5, self.n_actions-0.5)
+        yts1 = [i for i in range(self.n_actions)]
+        yts2 = [i+0.5 for i in range(self.n_actions)]
+        yticklabels = self.Din_options
+        
+        initE_percent = initE / ((self.n_states-2)*OD2state)
+        X_initE = initE_percent * (self.n_states-1) + 0.5
+
+        X1 = [] # state
+        Y1 = [] # action
         # # Y2 = [] # value of best action
-        # for state in range(self.n_states):
+        for state in range(self.n_states):
             
-        #     action = np.argmax(self.values[state])
-        #     value = np.max(self.values[state])
+            action = np.argmax(self.values[state])
+        #    # value = np.max(self.values[state])
             
-        #     X = X + [state, state+1]
-        #     Y1 = Y1 + [action, action]
+            X1 = X1 + [state, state+1]
+            Y1 = Y1 + [action, action]
         #     # Y2 = Y2 + [value, value]
         
-        # ax[0].plot(X, Y1, color=pal['M'], lw=3.0)
-        # ax[0].set_xlim(xlims[0], xlims[1])
-        # ax[0].set_xticks(xts)
-        # ax[0].set_xticklabels(np.round(ods, 2), fontsize=14)
+        ax[0].plot(X1, Y1, color=palE['bla'], lw=3.0)
+        ax[0].set_xlim(xlims[0], xlims[1])
+        ax[0].set_xticks(xts)
+        ax[0].set_xticklabels(np.round(ods, 2), fontsize=14)
 
-        # ax[0].set_ylim(ylims[0], ylims[1])
-        # ax[0].set_yticks(yts1)
-        # ax[0].set_yticklabels(["Close", "Open"], fontsize=16)
+        ax[0].set_ylim(ylims[0], ylims[1])
+        ax[0].set_yticks(yts1)
+        ax[0].set_yticklabels(yticklabels, fontsize=16)
         
-        # ax[0].set(xlabel="OD (rounded)", ylabel = "Action")
+        ax[0].set(xlabel="$E$ (OD)", ylabel = "Choice for $D_{in}$ ($\mu$g/mL)")
 
-        # v = ax[1].pcolormesh(self.values.T, cmap="plasma")
-        # ax[1].set_xticks(xts)
-        # ax[1].set_xticklabels(np.round(ods, 2), fontsize=14)
-        # ax[1].set_yticks(yts2)
-        # ax[1].set_yticklabels(["", ""])
-        # ax[1].set(xlabel="OD (rounded)")
+        v = ax[1].pcolormesh(self.values.T, cmap="Oranges")
+        ax[1].set_xticks(xts)
+        ax[1].set_xticklabels(np.round(ods, 2), fontsize=14)
+        ax[1].set_yticks(yts2)
+        ax[1].set_yticklabels([""]*len(self.Din_options))
+        ax[1].set(xlabel="$E$ (OD)")
         
-        # c = plt.colorbar(v, cax=ax[2], label="Value")
-        # ax[2].locator_params(tight=True, nbins=4)
-        # ax[2].tick_params(labelsize=14)
+        c = plt.colorbar(v, cax=ax[2], label="Value")
+        ax[2].locator_params(tight=True, nbins=4)
+        ax[2].tick_params(labelsize=14)
 
-        # # Plot Pmax
-        # ax[0].axvline(x=X_Pmax, color='black', lw=1.5, ls=(0, (3, 7, 1, 7)))
-        # ax[1].axvline(x=X_Pmax, color='black', lw=1.5, ls=(0, (3, 7, 1, 7)))
+        # Plot initial E
+        ax[0].axvline(x=X_initE, color=palT['pur'], lw=2, ls='--', 
+                      label = "$E(t=0)$")
+        ax[1].axvline(x=X_initE, color=palT['pur'], lw=2, ls='--', 
+                      label = "$E(t=0)$")
+        # Legend
+        ax[1].legend(loc='lower right', bbox_to_anchor=(1.0, 1.01))
+        
+        return fig
 
-        # # Plot escape threshold
-        # ax[0].axvline(x=X_Et, color='black', lw=1.5, ls='dashed')
-        # ax[1].axvline(x=X_Et, color='black', lw=1.5, ls='dashed')
+    def visualize_policy_2D(self, initE: float, OD2state: float) -> plt.figure:
 
+        fig, ax = plt.subplots(1, 3, figsize=(7.5*2 + 0.2, 7.5), 
+                               gridspec_kw={'wspace': 0.1,
+                               'width_ratios': [0.49, 0.49, 0.02]})
         return fig
 
 class RationalAgent():

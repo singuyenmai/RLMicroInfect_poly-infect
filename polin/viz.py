@@ -22,48 +22,83 @@ def set_plot_style():
     plt.rc('font', **font)
     legnd = {'fontsize': 20, 'handlelength': 1.5}
     plt.rc('legend', **legnd)
-    mathtext = {'mathtext.default': 'regular' } 
-    plt.rcParams.update(mathtext)
 
-def visualize_train(train_perf_file):
+def visualize_train(train_perf_file: str, episode_time_max: float) -> plt.figure:
         set_plot_style()
+        mathtext = {'mathtext.default': 'it' } 
+        plt.rcParams.update(mathtext)
+        plt.rcParams["legend.markerscale"] = 4
 
         df = pd.read_csv(train_perf_file, sep='\t')
         
-        fig, ax = plt.subplots(1, 2, figsize=(9*2, 6),
-                               gridspec_kw={'wspace': 0.5})
+        fig, ax = plt.subplots(1, 5, figsize=(7.5*4, 5.5),
+                               gridspec_kw={'width_ratios': [0.12, 0.0, 0.12, 0.12, 0.12], 
+                                            'wspace': 0.4})
+        ax[1].axis('off')
+
         line_w = 0.0
         palE = colchart.get_colorBook("Egypt")
         palT = colchart.get_colorBook("myTheme")
 
         # Plot return (cumulative rewards)
-        ax[0].plot(df['episode'], df['e_return'], 
-                   lw=line_w, marker='o', markersize=3,
-                   color=palE['bla'], label='Return')
+        ax[0].scatter(df['episode'], df['e_return'], 
+                      s=8, marker='o',
+                      c=palE['bla'], label='Return')
+        
+        ax[0].set_ylim(-1.0, 20.0)
+        ax[0].set(xlabel='Episode', ylabel='Return')
+        
         # Plot explore rate
         ax01 = ax[0].twinx()
         ax01.plot(df['episode'], df['explore_rate'], 
                   lw=2, color=palT['exp'], label='Explore rate')
-        
-        # Plot total drug in
-        ax[1].plot(df['episode'], df['total_drug_in'], 
-                   lw=line_w, marker='o', markersize=3,
-                   color=palT['tur'])
-
-        # Set axis labels
-        ax[0].set(xlabel='Episode', ylabel='Return')
         ax01.set(ylabel='Explore rate')
-        ax[1].set(xlabel='Episode', ylabel='Cumulative drug in ($\mu$g/mL)')
 
         # Add legends
-        ax[0].legend(bbox_to_anchor=(1.0, 1.0), loc='lower right')
-        ax01.legend(bbox_to_anchor=(0.0, 1.0), loc='lower left')
+        ax[0].legend(bbox_to_anchor=(1.1, 1.0), loc='lower right')
+        ax01.legend(bbox_to_anchor=(-0.05, 1.0), loc='lower left')
+        
+        # Plot first time to a tiny density
+        tscale = 60.0 # convert min from hour
+        tTiny_first = df['tTiny_first'].fillna(value = episode_time_max*1.1) / tscale
+
+        ax[2].scatter(df['episode'], tTiny_first, 
+                      s=8, marker='o', c = palT['pink'])
+        ax[2].axhline(y = episode_time_max/tscale, color=palT['ora'], lw=2, ls='--', label="Simulation time")
+
+        ax[2].legend(bbox_to_anchor=(1.0, 1.0), loc='lower right')
+
+        ax[2].set_ylim(-2.5, 1.15*episode_time_max/tscale)
+        ax[2].set(xlabel='Episode', ylabel="   \n$T_{tiny}$ (hours)")
+
+        # Plot first time to a 5% of initial E
+        tscale = 60.0 # convert min from hour
+        t5p_first = df['t5p_first'].fillna(value = episode_time_max*1.1) / tscale
+
+        ax[3].scatter(df['episode'], t5p_first, 
+                      s=8, marker='o', c = palT['lightblue'])
+        ax[3].axhline(y = episode_time_max/tscale, color=palT['ora'], lw=2, ls='--', label="Simulation time")
+
+        ax[3].legend(bbox_to_anchor=(1.0, 1.0), loc='lower right')
+
+        ax[3].set_ylim(-2.5, 1.15*episode_time_max/tscale)
+        ax[3].set(xlabel='Episode', ylabel="   \n$T_{5\%}$ (hours)")
+
+        # Plot total drug in
+        dscale = 10**3 # converting from ug to mg
+        ax[4].scatter(df['episode'], df['total_drug_in']/dscale, 
+                      s=8, marker='o', c=palT['tur'])
+        
+        ax[4].set_ylim(-0.1, 2.2)
+        ax[4].set(xlabel='Episode', ylabel='Total supplied drug (mg)')
 
         return fig
 
 def visualize_simulation(env, st='full', 
-                         tscale=60.0, title='auto'):
+                         tscale=60.0, title='auto') -> plt.figure:
         set_plot_style()
+        mathtext = {'mathtext.default': 'regular' } 
+        plt.rcParams.update(mathtext)
 
         fig, ax = plt.subplots(3,1, figsize=(7, 12), 
                                 sharex=True,
