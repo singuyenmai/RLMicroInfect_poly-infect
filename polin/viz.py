@@ -148,10 +148,12 @@ def visualize_simulation(env, st='full',
             lM, = ax[2].plot(t, M, lw=line_w, color=palT['grey'], label='Total')
             lZ, = ax[2].plot(t, Z, lw=line_w, color=palT['gre'], label='Z')
             
-            ax[2].legend(handles=[lE, lZ, lM, lEmic, lZmic], ncol=2, 
-                         loc='upper right', bbox_to_anchor=(1.02, 1.02))
+            hdles = [lE, lZ, lM, lEmic, lZmic] if len(A) > 1 else [lE, lZ, lM]
         else:
-            ax[2].legend(handles=[lE, lEmic], loc='upper right', bbox_to_anchor=(1.02, 1.02))
+            hdles = [lE, lEmic] if len(A) > 1 else [lE]
+
+        ax[2].legend(handles=hdles, ncol=2, 
+                     loc='upper right', bbox_to_anchor=(1.02, 1.02))
         
 
         ax[2].set(xlabel = 'Time (hours)', ylabel='OD')
