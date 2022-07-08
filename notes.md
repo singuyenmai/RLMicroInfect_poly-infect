@@ -27,3 +27,28 @@ $\alpha_{EZ}$ negative & $Z$ is more sensitive
 Possible structural identifiability in the system:
 
 - Tweaking the MIC of E when in mono-culture / co-culture with no interactions could give similar results as when Z is more resistant and $\alpha_{EZ}$ varies. --> Effects of interactions could make the targeted population appeared to have different MICs.
+
+Compared to the Hansen's problem:
+
+- Difference/Contrast: No drug-resistant of targeted pathogen. Even Z could be more resistant, it's density is not of concern. --> The goal is to eliminate as fast as possible. --> Could be useful to avoid long time and sufficient populaiton density for mutant emergence?
+- Yet, similarity: no evolution processes taken into account. --> Difficult to say about the impact on evolution.
+
+Q-learning dit not perform very well
+
+- It is sensitive to initial conditions: strength when Z is more resistant, but weakness when Z has same MIC as E. (When Z has same MIC as E, changing microbial interactions did not affect the fixed rational drug policy, but it did affected the Q-learning)
+
+- Reward function: no significant increase from a very tiny E to elimination of E
+- Agent did not account much for long-term return --> Change discount factor?
+- Add Z to observable state, but larger state space --> more training, more time required
+- Multiple policies with similar return when there is no interactions
+
+#### Useful scripts
+
+```bash
+JOB_SCRIPT="/home/singuyen/Study/SCB/1.MSc_projects/Second_project/polyInfect/run_experiment.py"
+
+cd QLearning_stateE/qlearning_micZ140
+
+python $JOB_SCRIPT -f qlearning_micZ140.2/params.qlearning_micZ140.2.json --test_only
+```
+
