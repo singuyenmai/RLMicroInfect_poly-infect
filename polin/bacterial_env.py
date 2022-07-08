@@ -75,7 +75,7 @@ class BacterialEnv():
         self.alpha_ZE = param_dict['ode_params']['alpha_ZE']
 
         self.kd = param_dict['ode_params']['kd']
-        self.ki = param_dict['ode_params']['ki']
+        self.ka = param_dict['ode_params']['ka']
 
         self.micE = param_dict['ode_params']['micE']
         self.micZ = param_dict['ode_params']['micZ']
@@ -121,7 +121,7 @@ class BacterialEnv():
         Parameters:
             S: current environment state
             t: current time
-            Din: drug concentration that goes in at some constant rate `ki`
+            Din: drug concentration that goes in at some constant rate `ka`
         Returns:
             rhs: array of the right-hand sides of the differential equations for all environment state variables
         '''
@@ -137,7 +137,7 @@ class BacterialEnv():
         dE_dt = E * (self.rE - self.rE/self.cE * E + self.alpha_EZ * Z - deltaE) # focal species E
         dZ_dt = Z * (self.rZ - self.rZ/self.cZ * Z + self.alpha_ZE * E - deltaZ) # neighbor species Z
         
-        dD_dt = self.ki * Din - self.kd * D # drug concentration
+        dD_dt = self.ka * Din - self.kd * D # drug concentration
         
         rhs = [dE_dt, dZ_dt, dD_dt]
 
@@ -172,7 +172,7 @@ class BacterialEnv():
             raise ValueError("Time duration for drug in cannot be longer than step time")
         
         self.actions = np.append(self.actions, np.array([[self.tSol[-1], Din]]), axis=0)
-        self.total_drug_in += Din * drug_time * self.ki
+        self.total_drug_in += Din * drug_time * self.ka
 
         t_start = self.tSol[-1]
         t_end = t_start + drug_time
