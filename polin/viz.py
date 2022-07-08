@@ -130,9 +130,12 @@ def visualize_simulation(env, st='full',
         ax[1].plot(t, D, lw=line_w, color=palT['tur'])
 
         # Plot MIC
+        lEmic = ax[1].axhline(y = env.micE, lw=line_w/2, 
+                              color=palT['pur'], ls='--', label="$MIC_E$")
+        
         if not env.mono:
-            ax[1].axhline(y = env.micZ, lw=line_w/2, color=palT['gre'], ls='--')
-        ax[1].axhline(y = env.micE, lw=line_w/2, color=palT['pur'], ls='--')
+            lZmic = ax[1].axhline(y = env.micZ, lw=line_w/2, 
+                                  color=palT['gre'], ls='--', label="$MIC_Z$")
 
         ax[1].set(ylabel='Drug\n($\mu$g/mL)')
         ax[1].set_ylim(0.0, 200.0)
@@ -145,10 +148,10 @@ def visualize_simulation(env, st='full',
             lM, = ax[2].plot(t, M, lw=line_w, color=palT['grey'], label='Total')
             lZ, = ax[2].plot(t, Z, lw=line_w, color=palT['gre'], label='Z')
             
-            ax[2].legend(handles=[lE, lZ, lM], ncol=1, 
+            ax[2].legend(handles=[lE, lZ, lM, lEmic, lZmic], ncol=2, 
                          loc='upper right', bbox_to_anchor=(1.02, 1.02))
         else:
-            ax[2].legend(handles=[lE], loc='upper right', bbox_to_anchor=(1.02, 1.02))
+            ax[2].legend(handles=[lE, lEmic], loc='upper right', bbox_to_anchor=(1.02, 1.02))
         
 
         ax[2].set(xlabel = 'Time (hours)', ylabel='OD')
