@@ -97,7 +97,7 @@ def visualize_train(train_perf_file: str, episode_time_max: float) -> plt.figure
 def visualize_simulation(env, st='full', 
                          tscale=60.0, title='auto') -> plt.figure:
         set_plot_style()
-        mathtext = {'mathtext.default': 'regular' } 
+        mathtext = {'mathtext.default': 'it' } 
         plt.rcParams.update(mathtext)
 
         fig, ax = plt.subplots(3,1, figsize=(7, 12), 
@@ -122,7 +122,7 @@ def visualize_simulation(env, st='full',
         # Plot actions
         ax[0].scatter(A[:, 0] / tscale, A[:, 1], s=action_ms, marker='^', color=palT['ora'])
 
-        ax[0].set(ylabel='Action\n($\mu$g/mL)')
+        ax[0].set(ylabel='Chosen $D_{in}$\n($\mu$g/mL)')
         ax[0].set_ylim(-10, 140.0)
         ax[0].set_yticks([0, 100, 140])
 
