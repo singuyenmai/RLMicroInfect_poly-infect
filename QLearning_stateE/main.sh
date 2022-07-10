@@ -23,7 +23,7 @@ function get_features(){
         pf=$collection"/"$ID"/testing_perf."$ID".tsv"; #testing performance file of each experiment
 
         l=$(cat $pf | wc -l); #get the number of lines of the file
-        if [ $l -gt 2 ]; then #if there are more than 2 lines, it's because one of the array stored was too long and resulted in line break
+        if [ $l -gt 1 ]; then #if there are more than 2 lines, it's because one of the array stored was too long and resulted in line break
             tmp="tmp.tsv";
             head -n 1 $pf > $tmp; 
             tail -n +2 $pf | tr --delete '\n' >> $tmp; #remove the line breaks within arrays
@@ -55,7 +55,7 @@ rationals=("rational_micEZ70" "rational_micZ140")
 exp_ids=("3" "24" "45")
 
 for r in ${rationals[@]}; do
-    for e in ${exp_ids[@]}$; do
+    for e in ${exp_ids[@]}; do
         f=$r"."$e;
         grep -w "$f" ../Rational/$r/features.tsv >> $collect;
     done;
