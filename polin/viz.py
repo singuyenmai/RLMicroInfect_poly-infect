@@ -85,12 +85,12 @@ def visualize_train(train_perf_file: str, episode_time_max: float) -> plt.figure
         ax[3].set(xlabel='Episode', ylabel="   \n$T_{5\%}$ (hours)")
 
         # Plot total drug in
-        dscale = 10**3 # converting from ug to mg
+        dscale = 10**3 # converting from ug/mL to mg/mL
         ax[4].scatter(df['episode'], df['total_drug_in']/dscale, 
                       s=8, marker='o', c=palT['tur'])
         
         ax[4].set_ylim(-0.1, 2.2)
-        ax[4].set(xlabel='Episode', ylabel='Total supplied drug (mg)')
+        ax[4].set(xlabel='Episode', ylabel='Total supplied drug (mg/mL)')
 
         return fig
 
