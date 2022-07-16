@@ -23,7 +23,7 @@ dscale = 10**3 #convert ug/mL to mg/mL
 ax[0].set_ylim(9.8, 16.0)
 ax[0].set_ylabel("Return")
 ax[1].set_ylim(-5.0, 1.15*sim_time/tscale)
-ax[1].set_ylabel("$T_{tiny}$ (hours)")
+ax[1].set_ylabel("$T_{\\theta}$ (hours)")
 ax[2].set_ylim(-5.0, 1.15*sim_time/tscale)
 ax[2].set_ylabel("$T_{5\%}$ (hours)")
 ax[3].set_ylim(-0.1, 1.8)
