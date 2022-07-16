@@ -69,7 +69,7 @@ def visualize_train(train_perf_file: str, episode_time_max: float) -> plt.figure
         ax[2].legend(bbox_to_anchor=(1.0, 1.0), loc='lower right')
 
         ax[2].set_ylim(-2.5, 1.15*episode_time_max/tscale)
-        ax[2].set(xlabel='Episode', ylabel="   \n$T_{tiny}$ (hours)")
+        ax[2].set(xlabel='Episode', ylabel="   \n$T_{\theta}$ (hours)")
 
         # Plot first time to a 5% of initial E
         tscale = 60.0 # convert min from hour
