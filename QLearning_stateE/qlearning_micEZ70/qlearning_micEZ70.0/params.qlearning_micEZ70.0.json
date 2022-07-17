@@ -1,0 +1,60 @@
+{
+    "env": {
+        "ode_params": {
+            "rE": 0.0148,
+            "cE": 0.3088,
+            "rZ": 0.0164,
+            "cZ": 0.3629,
+            "alpha_EZ": -0.03,
+            "alpha_ZE": 0.0,
+            "ka": 0.005,
+            "kd": 0.003,
+            "micE": 70.0,
+            "micZ": 70.0,
+            "dmaxE": 0.0296,
+            "dmaxZ": 0.0328,
+            "gamma": 3.5
+        },
+        "initial_conditions": {
+            "E": 0.01,
+            "Z": 0.01,
+            "D": 0.0
+        }
+    },
+    "simulation": {
+        "simulation_time": 5760.0,
+        "env_step_time": 360.0,
+        "reset_type": "coexist",
+        "reward_func": "minED",
+        "reward_kwargs": {
+            "w_E": 1.0,
+            "Din_max": 120.0,
+            "w_D": 0.2
+        }
+    },
+    "controller": {
+        "type_name": "QLearning",
+        "agent": {
+            "n_states": 22,
+            "n_actions": 5,
+            "n_states_dimensions": 1,
+            "Din_options": [
+                0.0,
+                50.0,
+                70.0,
+                100.0,
+                120.0
+            ],
+            "drug_time": 180.0,
+            "gamma": 0.9,
+            "alpha": 0.01
+        },
+        "training": {
+            "n_episodes": 1500,
+            "decay": 150,
+            "episode_time_max": 7200.0
+        }
+    },
+    "exp_ID": "qlearning_micEZ70.0",
+    "exp_name": "Q-learning policy - MIC E=Z=70 0"
+}

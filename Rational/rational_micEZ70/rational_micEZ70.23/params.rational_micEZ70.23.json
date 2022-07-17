@@ -7,7 +7,7 @@
             "cZ": 0.3629,
             "alpha_EZ": 0.0,
             "alpha_ZE": -0.01666666666666667,
-            "ki": 0.005,
+            "ka": 0.005,
             "kd": 0.003,
             "micE": 70.0,
             "micZ": 70.0,
@@ -24,7 +24,13 @@
     "simulation": {
         "simulation_time": 5760.0,
         "env_step_time": 360.0,
-        "reset_type": "coexist"
+        "reset_type": "coexist",
+        "reward_func": "minED",
+        "reward_kwargs": {
+            "w_E": 1.0,
+            "Din_max": 120.0,
+            "w_D": 0.2
+        }
     },
     "controller": {
         "type_name": "Rational",

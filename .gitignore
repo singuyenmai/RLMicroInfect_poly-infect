@@ -8,5 +8,6 @@ sandbox/
 deVos2017.zip
 deVos2017/
 
-exp_example/
-collection_example/
+exp_example_Rational/
+exp_example_QLearning/
+collection_example_Rational/

@@ -1,24 +1,36 @@
+import polin.reward_func as rf
+
 from typing import List, Dict, Tuple
 
 import numpy as np
 from scipy.integrate import solve_ivp
-import warnings
+import math
 
 class BacterialEnv():
-
     '''
     Microbial growth environment that are under drug treatment control policy
+    Initialized with:
+        param_dict (dictionary): parameters for the ODE model & initial conditions
+        step_time (float): time for integration whenever the `step` method is called
+        reward_func (str): name of the reward function
+        reward_kwargs (dict): parameters for reward caculations
+        state_method (str): name of the method to return state
+        n_states (int or None): number of discrete states, should be 
+                                int when `state_method` is "disc_EZ",
+                                None when `state_method` is "cont_E"
     '''
-
-    def __init__(self, param_dict: Dict, sampling_time: float, state_method="cont_E") -> None:
+    def __init__(self, param_dict: Dict, step_time: 60.0*6.0, 
+                 reward_func: "minED", reward_kwargs: {}, 
+                 state_method="cont_E", n_states=None):
         
-        self.set_params(param_dict)
+        self.set_params(param_dict) # set params from the param_dict
+        
         self.initial_S = np.array([self.init_E, self.init_Z, self.init_D]) # init conditions of S = [E, Z, D]
-        
         self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S)) # solution of S
         self.tSol = np.array([0.0]) # solution of time t
 
         self.actions = np.empty((0, 2), float) # matrix of actions with corresponding timepoints
+        self.total_drug_in = 0.0 # cumulative drug "absorbed" / "flowed" in
 
         if self.init_Z == 0.0:
             self.mono = True # if it's a mono-culture env, this is just for visualization
@@ -29,21 +41,32 @@ class BacterialEnv():
         self.t5p = np.array([]) # timepoints t at which density E = 5% of its initial condition
         self.tTiny = np.array([]) # timepoints t at which density E = tiny number
         
-        self.sampling_time = sampling_time
+        self.step_time = step_time # total integration time for each time `step` method is called
         
-        # self.get_reward = reward_func # function for the reward
-        # self.reward_kwargs = reward_kwargs # kwargs for reward func
+        self.set_reward_func(reward_func) # set the function that returns reward
+        self.reward_kwargs = reward_kwargs # kwargs for the reward function
 
-        self.state_method = state_method # method to derive observable state for the controller
-        # self.n_states = n_states
-        # self.OD2state = None
-        self.state = self.get_state(self.state_method) # observable state to the controller
+        # method to derive observable state for the controller
+        self.defined_state_methods = ["cont_E", "disc_EZ", "disc_E"]
+        
+        if state_method not in self.defined_state_methods:
+            raise ValueError(f"Method to derive observable state is not in the list of defined methods: {self.defined_state_methods}")
+        else:
+            self.state_method = state_method 
+        
+        # the 3 below are only applicable to Q-learning controllers
+        self.n_states = n_states # total number of states
+        self.growth_bounds = [0.0, 0.5] # bounds of bacterial growth density
+        self.OD2state = None # distance (in density unit) between 2 consecutive states, 
+                             # also the "exchange rate" to convert from density to discrete state
+
+        self.state = self.get_state() # observable state to the controller
 
     def set_params(self, param_dict: Dict) -> None:
         '''
         Sets environment parameters to those stored in a python dictionary
-            Parameters:
-                param_dict : pyhon dictionary containing all params
+        Parameters:
+            param_dict : pyhon dictionary containing all params
         '''
         # ODE model param
         self.rE = param_dict['ode_params']['rE']; self.rZ = param_dict['ode_params']['rZ'] 
@@ -52,7 +75,7 @@ class BacterialEnv():
         self.alpha_ZE = param_dict['ode_params']['alpha_ZE']
 
         self.kd = param_dict['ode_params']['kd']
-        self.ki = param_dict['ode_params']['ki']
+        self.ka = param_dict['ode_params']['ka']
 
         self.micE = param_dict['ode_params']['micE']
         self.micZ = param_dict['ode_params']['micZ']
@@ -65,11 +88,32 @@ class BacterialEnv():
         self.init_Z = param_dict['initial_conditions']['Z']
         self.init_D = param_dict['initial_conditions']['D']
     
-    def set_state_method(self, state_method: str) -> None:
-        self.state_method = state_method
-    
-    # def set_n_states(self, n_states: int) -> None:
-        # self.n_states = n_states
+    def set_reward_func(self, func_name: str) -> None:
+        '''
+        Sets the reward function given the function name
+        Parameters;
+            func_name (str): name of the reward function to be used
+        '''
+        if func_name == 'minED':
+            self.get_reward = rf.minED
+        else:
+            raise ValueError('Supplied reward function name is not (yet) defined')
+
+    def reset_state_method(self, state_method: str, n_states: int) -> None:
+        '''
+        Resets the method to return state given the method name
+        Parameters:
+            state_method (str): name of the state method to be used
+            n_states (int or None): number of states to set to, int when `state_method` is "disc_EZ", None when "cont_E"
+        '''
+        if state_method not in self.defined_state_methods:
+            raise ValueError("Method to derive observable state is not yet defined")
+        else:
+            self.state_method = state_method
+        
+        self.n_states = n_states
+        # update the env state accordingly to the new method
+        self.state = self.get_state()
     
     def ODEsys(self, t, S, Din: float) -> List:
         '''
@@ -77,7 +121,7 @@ class BacterialEnv():
         Parameters:
             S: current environment state
             t: current time
-            Din: drug concentration that goes in at some constant rate `ki`
+            Din: drug concentration that goes in at some constant rate `ka`
         Returns:
             rhs: array of the right-hand sides of the differential equations for all environment state variables
         '''
@@ -93,7 +137,7 @@ class BacterialEnv():
         dE_dt = E * (self.rE - self.rE/self.cE * E + self.alpha_EZ * Z - deltaE) # focal species E
         dZ_dt = Z * (self.rZ - self.rZ/self.cZ * Z + self.alpha_ZE * E - deltaZ) # neighbor species Z
         
-        dD_dt = self.ki * Din - self.kd * D # drug concentration
+        dD_dt = self.ka * Din - self.kd * D # drug concentration
         
         rhs = [dE_dt, dZ_dt, dD_dt]
 
@@ -113,21 +157,22 @@ class BacterialEnv():
 
     def step(self, action: Tuple) -> None:
         '''
-        Solves the ODEs system for a time period defined by `sampling_time` param, under the action provided by a controller
+        Solves the ODEs system for a time period defined by `step_time` param, under the action taken by a controller
         Parameters:
             action (tuple): action chosen by the controller, 
                             in the form of (Din (float): "flow in" drug concentration, drug_time (float): time for "flow in" of drug)
         Returns:
-            state (int): the system/env state to be observed by the controller
+            state (int or float): the system/env state to be observed by the controller,
+                                  int when `state_method` is "disc_EZ", float when "cont_E"
             reward (float): reward calculated accordingly to the `reward_func`
             done (boolean): whether a terminal state has been observed
-            info (dict): other interesting information of the system
         '''
         Din, drug_time = action
-        if drug_time > self.sampling_time:
-            raise ValueError("Time duration for drug in cannot be longer than sampling time")
+        if drug_time > self.step_time:
+            raise ValueError("Time duration for drug in cannot be longer than step time")
         
         self.actions = np.append(self.actions, np.array([[self.tSol[-1], Din]]), axis=0)
+        self.total_drug_in += Din * drug_time * self.ka
 
         t_start = self.tSol[-1]
         t_end = t_start + drug_time
@@ -137,14 +182,18 @@ class BacterialEnv():
                         events = [self.event5p, self.eventTiny], max_step=0.01,
                         method = "LSODA")
 
-        self.sSol = np.append(self.sSol, sol.y.T[1:, :], axis=0)
+        solEZ = sol.y[:2, :]
+        roundedZero_solEZ = np.where(np.round(solEZ, 5) == 0, 0.0, solEZ)
+        soly = np.append(roundedZero_solEZ, sol.y[[-1], :], axis=0)
+
+        self.sSol = np.append(self.sSol, soly.T[1:, :], axis=0)
         self.tSol = np.append(self.tSol, sol.t[1:])
         self.t5p = np.append(self.t5p, sol.t_events[0])
         self.tTiny = np.append(self.tTiny, sol.t_events[1])
 
-        if (self.sampling_time - drug_time) > 0.0:
+        if (self.step_time - drug_time) > 0.0:
             t_start = self.tSol[-1]
-            t_end = t_start + (self.sampling_time - drug_time)
+            t_end = t_start + (self.step_time - drug_time)
             init = self.sSol[-1, :]
 
             sol = solve_ivp(self.ODEsys, [t_start, t_end], init, args=(0.0,), 
@@ -160,23 +209,56 @@ class BacterialEnv():
             self.t5p = np.append(self.t5p, sol.t_events[0])
             self.tTiny = np.append(self.tTiny, sol.t_events[1])
                 
-        self.state = self.get_state(self.state_method)
+        self.state = self.get_state()
 
-        reward, done = None, None
+        reward, done = self.get_reward(action, self.sSol, self.tSol, **self.reward_kwargs)
 
         return self.state, reward, done
     
-    def get_state(self, method: str):
+    def get_state(self):
         '''
-        Returns the "current" state of the system/env for the controller to make decisions.
-        Parameters:
-            method (str): name of the method to compute the state of the system
-        Returns: the type of the return depends on the method of deriving the state 
+        Returns the "current" state of the system/env for the controller to make decisions:
+            state: float if `state_method` is "cont_E", int if "disc_EZ"
         '''
-        if method == "cont_E": # returns the most recent density of species E (continuous value)
-            return self.sSol[-1, 0]
-        else:
-            raise ValueError("Method to derive observable state is not yet defined")
+        if self.state_method == "cont_E": # returns the most recent density of species E (continuous value)
+            state = self.sSol[-1, 0]
+        
+        if self.state_method == "disc_EZ" or self.state_method == "disc_E":
+            if self.n_states is None:
+                raise RuntimeError(f'n_states should be defined for \"{method}\" method')
+            elif not isinstance(self.n_states, int):
+                raise ValueError("n_states should be an integer")
+        
+        if self.state_method == "disc_EZ":
+            # "current" bacterial densities
+            E = self.sSol[-1, 0]
+            Z = self.sSol[-1, 1]
+
+            # discretizing bacterial densities
+            N_disc = int(math.sqrt(self.n_states) - 2)
+            self.OD2state = (self.growth_bounds[1] - self.growth_bounds[0]) / N_disc
+
+            E_disc = int(E // self.OD2state + 1) if E > 0.0 else 0
+            Z_disc = int(Z // self.OD2state + 1) if Z > 0.0 else 0
+            
+            # discrete state is a value in the matrix 
+            # S = np.arange(self.n_states).reshape(math.sqrt(self.n_states), math.sqrt(self.n_states))
+            # with E_disc as row index and Z_disc as column index
+            # state = S[E_disc, Z_disc]
+            state = int(E_disc * math.sqrt(self.n_states) + Z_disc)
+        
+        if self.state_method == "disc_E":
+            # "current" bacterial density
+            E = self.sSol[-1, 0]
+
+            # discretizing bacterial density
+            N_disc = int(self.n_states - 2)
+            self.OD2state = (self.growth_bounds[1] - self.growth_bounds[0]) / N_disc
+
+            E_disc = int(E // self.OD2state + 1) if E > 0.0 else 0
+            state = E_disc
+        
+        return state
     
     def coexist_equilibrium(self) -> Tuple:
         '''
@@ -207,12 +289,15 @@ class BacterialEnv():
         else:
             raise ValueError("Parameter `eq_type` can only be either \"coexist\" or \"mono\".")
 
+        self.init_E = eqE
+        self.init_Z = eqZ
         self.initial_S = np.array([eqE, eqZ, self.init_D])
         
         self.sSol = np.array(self.initial_S).reshape(1, len(self.initial_S))
         self.tSol = np.array([0.0])
 
         self.actions = np.empty((0, 2), float)
+        self.total_drug_in = 0.0 
 
         self.mono = False # system starts at coexistence equilibrium / carrying capacities, so it's co-culture env
         
@@ -220,3 +305,6 @@ class BacterialEnv():
 
         self.t5p = np.array([])
         self.tTiny = np.array([]) 
+        
+        # update observable state to the controller
+        self.state = self.get_state()

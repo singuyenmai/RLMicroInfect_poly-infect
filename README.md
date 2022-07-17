@@ -2,14 +2,33 @@
 
 In the context of polymicrobial urinary tract infections (UTIs),
 
-- How do ecological interactions between pathogenic species impact the effectiveness of a drug policy?
-- If there is an impact, then how do we adapt our drug policy according to various ecological contexts? and Can the reinforcement learning approach enable adaptive drug control?
+- How do ecological interactions between microbes impact the effectiveness of a drug policy?
+- If there is an impact, then how do we adapt our drug policy to various ecological contexts? and Can the reinforcement learning approach enable adaptive drug control?
 
 # Implementation
 
-Parameters from (de Vos *et al.*, 2017): folder `params_deVos2017`
+Parameters from (de Vos *et al.*, 2017): directory `params_deVos2017`
 
-Qualitative analyses on 2-species model - different regimes of species abundance for varying inter-species interaction strengths: run `python qualitative_analyses.py` (or Jupyter Notebook `qualitative_analyses.ipynb`)
+Qualitative analyses on 2-species model without drug - different regimes of species abundance for varying inter-species interaction strengths
+
+```bash
+cd qualitative_analysis
+python qualitative_analyses.py # (or run Jupyter Notebook `qualitative_analyses.ipynb`)
+```
+
+Rational drug policy on different ecological contexts
+
+```bash
+cd Rational
+bash main.sh
+```
+
+Q-learning on different ecological contexts
+
+```bash
+cd QLearning_stateE
+bash main.sh
+```
 
 ## References
 

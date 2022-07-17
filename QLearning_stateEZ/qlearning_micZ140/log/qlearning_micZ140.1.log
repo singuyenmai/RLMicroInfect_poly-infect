@@ -1,0 +1,172 @@
+Parsing experiment parameters ...
+
+Parsing successful. Running experiment ...
+
+Training for 1500 episodes ...
+
+episode: 0 	| explore_rate: 1.0 	| return: 10.434
+episode: 10 	| explore_rate: 1.0 	| return: 9.228
+episode: 20 	| explore_rate: 1.0 	| return: 9.952
+episode: 30 	| explore_rate: 1.0 	| return: 5.562
+episode: 40 	| explore_rate: 1.0 	| return: 7.995
+episode: 50 	| explore_rate: 1.0 	| return: 8.083
+episode: 60 	| explore_rate: 1.0 	| return: 7.115
+episode: 70 	| explore_rate: 1.0 	| return: 12.195
+episode: 80 	| explore_rate: 1.0 	| return: 13.119
+episode: 90 	| explore_rate: 1.0 	| return: 10.313
+episode: 100 	| explore_rate: 1.0 	| return: 14.848
+episode: 110 	| explore_rate: 1.0 	| return: 12.037
+episode: 120 	| explore_rate: 1.0 	| return: 0.0
+episode: 130 	| explore_rate: 1.0 	| return: 12.248
+episode: 140 	| explore_rate: 1.0 	| return: 9.294
+episode: 150 	| explore_rate: 0.997 	| return: 11.889
+episode: 160 	| explore_rate: 0.969 	| return: 9.759
+episode: 170 	| explore_rate: 0.943 	| return: 0.0
+episode: 180 	| explore_rate: 0.918 	| return: 8.435
+episode: 190 	| explore_rate: 0.895 	| return: 0.0
+episode: 200 	| explore_rate: 0.873 	| return: 9.902
+episode: 210 	| explore_rate: 0.852 	| return: 15.396
+episode: 220 	| explore_rate: 0.832 	| return: 12.383
+episode: 230 	| explore_rate: 0.812 	| return: 8.995
+episode: 240 	| explore_rate: 0.794 	| return: 8.862
+episode: 250 	| explore_rate: 0.776 	| return: 12.415
+episode: 260 	| explore_rate: 0.759 	| return: 10.683
+episode: 270 	| explore_rate: 0.743 	| return: 13.338
+episode: 280 	| explore_rate: 0.727 	| return: 12.837
+episode: 290 	| explore_rate: 0.712 	| return: 11.293
+episode: 300 	| explore_rate: 0.698 	| return: 10.789
+episode: 310 	| explore_rate: 0.683 	| return: 0.0
+episode: 320 	| explore_rate: 0.67 	| return: 14.319
+episode: 330 	| explore_rate: 0.656 	| return: 14.468
+episode: 340 	| explore_rate: 0.643 	| return: 13.636
+episode: 350 	| explore_rate: 0.631 	| return: 16.144
+episode: 360 	| explore_rate: 0.619 	| return: 12.329
+episode: 370 	| explore_rate: 0.607 	| return: 16.538
+episode: 380 	| explore_rate: 0.595 	| return: 0.0
+episode: 390 	| explore_rate: 0.584 	| return: 11.336
+episode: 400 	| explore_rate: 0.573 	| return: 14.969
+episode: 410 	| explore_rate: 0.562 	| return: 14.947
+episode: 420 	| explore_rate: 0.552 	| return: 16.262
+episode: 430 	| explore_rate: 0.542 	| return: 0.0
+episode: 440 	| explore_rate: 0.532 	| return: 15.506
+episode: 450 	| explore_rate: 0.522 	| return: 0.0
+episode: 460 	| explore_rate: 0.512 	| return: 14.835
+episode: 470 	| explore_rate: 0.503 	| return: 13.919
+episode: 480 	| explore_rate: 0.494 	| return: 0.0
+episode: 490 	| explore_rate: 0.485 	| return: 14.849
+episode: 500 	| explore_rate: 0.476 	| return: 16.137
+episode: 510 	| explore_rate: 0.468 	| return: 16.141
+episode: 520 	| explore_rate: 0.459 	| return: 14.35
+episode: 530 	| explore_rate: 0.451 	| return: 11.57
+episode: 540 	| explore_rate: 0.443 	| return: 15.025
+episode: 550 	| explore_rate: 0.435 	| return: 0.0
+episode: 560 	| explore_rate: 0.427 	| return: 12.574
+episode: 570 	| explore_rate: 0.419 	| return: 15.953
+episode: 580 	| explore_rate: 0.412 	| return: 13.969
+episode: 590 	| explore_rate: 0.405 	| return: 16.273
+episode: 600 	| explore_rate: 0.397 	| return: 16.424
+episode: 610 	| explore_rate: 0.39 	| return: 14.945
+episode: 620 	| explore_rate: 0.383 	| return: 14.953
+episode: 630 	| explore_rate: 0.376 	| return: 16.218
+episode: 640 	| explore_rate: 0.369 	| return: 15.768
+episode: 650 	| explore_rate: 0.363 	| return: 14.968
+episode: 660 	| explore_rate: 0.356 	| return: 16.678
+episode: 670 	| explore_rate: 0.349 	| return: 15.544
+episode: 680 	| explore_rate: 0.343 	| return: 17.798
+episode: 690 	| explore_rate: 0.337 	| return: 14.249
+episode: 700 	| explore_rate: 0.33 	| return: 13.894
+episode: 710 	| explore_rate: 0.324 	| return: 0.0
+episode: 720 	| explore_rate: 0.318 	| return: 15.569
+episode: 730 	| explore_rate: 0.312 	| return: 11.639
+episode: 740 	| explore_rate: 0.306 	| return: 15.395
+episode: 750 	| explore_rate: 0.3 	| return: 13.563
+episode: 760 	| explore_rate: 0.295 	| return: 15.47
+episode: 770 	| explore_rate: 0.289 	| return: 14.664
+episode: 780 	| explore_rate: 0.283 	| return: 15.174
+episode: 790 	| explore_rate: 0.278 	| return: 14.377
+episode: 800 	| explore_rate: 0.272 	| return: 16.019
+episode: 810 	| explore_rate: 0.267 	| return: 0.0
+episode: 820 	| explore_rate: 0.262 	| return: 13.934
+episode: 830 	| explore_rate: 0.256 	| return: 16.223
+episode: 840 	| explore_rate: 0.251 	| return: 15.216
+episode: 850 	| explore_rate: 0.246 	| return: 15.173
+episode: 860 	| explore_rate: 0.241 	| return: 14.147
+episode: 870 	| explore_rate: 0.236 	| return: 15.854
+episode: 880 	| explore_rate: 0.231 	| return: 16.417
+episode: 890 	| explore_rate: 0.226 	| return: 16.462
+episode: 900 	| explore_rate: 0.221 	| return: 16.413
+episode: 910 	| explore_rate: 0.217 	| return: 15.744
+episode: 920 	| explore_rate: 0.212 	| return: 16.309
+episode: 930 	| explore_rate: 0.207 	| return: 15.923
+episode: 940 	| explore_rate: 0.203 	| return: 16.422
+episode: 950 	| explore_rate: 0.198 	| return: 15.379
+episode: 960 	| explore_rate: 0.193 	| return: 14.644
+episode: 970 	| explore_rate: 0.189 	| return: 16.245
+episode: 980 	| explore_rate: 0.184 	| return: 16.282
+episode: 990 	| explore_rate: 0.18 	| return: 15.225
+episode: 1000 	| explore_rate: 0.176 	| return: 16.847
+episode: 1010 	| explore_rate: 0.171 	| return: 15.548
+episode: 1020 	| explore_rate: 0.167 	| return: 14.481
+episode: 1030 	| explore_rate: 0.163 	| return: 16.186
+episode: 1040 	| explore_rate: 0.159 	| return: 16.282
+episode: 1050 	| explore_rate: 0.154 	| return: 16.195
+episode: 1060 	| explore_rate: 0.15 	| return: 16.285
+episode: 1070 	| explore_rate: 0.146 	| return: 15.943
+episode: 1080 	| explore_rate: 0.142 	| return: 16.365
+episode: 1090 	| explore_rate: 0.138 	| return: 16.462
+episode: 1100 	| explore_rate: 0.134 	| return: 16.726
+episode: 1110 	| explore_rate: 0.13 	| return: 16.226
+episode: 1120 	| explore_rate: 0.126 	| return: 14.995
+episode: 1130 	| explore_rate: 0.123 	| return: 16.496
+episode: 1140 	| explore_rate: 0.119 	| return: 14.96
+episode: 1150 	| explore_rate: 0.115 	| return: 14.678
+episode: 1160 	| explore_rate: 0.111 	| return: 15.686
+episode: 1170 	| explore_rate: 0.108 	| return: 16.391
+episode: 1180 	| explore_rate: 0.104 	| return: 15.778
+episode: 1190 	| explore_rate: 0.1 	| return: 16.413
+episode: 1200 	| explore_rate: 0.097 	| return: 15.644
+episode: 1210 	| explore_rate: 0.093 	| return: 16.413
+episode: 1220 	| explore_rate: 0.089 	| return: 16.591
+episode: 1230 	| explore_rate: 0.086 	| return: 15.878
+episode: 1240 	| explore_rate: 0.082 	| return: 16.675
+episode: 1250 	| explore_rate: 0.079 	| return: 15.906
+episode: 1260 	| explore_rate: 0.075 	| return: 16.581
+episode: 1270 	| explore_rate: 0.072 	| return: 16.537
+episode: 1280 	| explore_rate: 0.069 	| return: 16.413
+episode: 1290 	| explore_rate: 0.065 	| return: 15.923
+episode: 1300 	| explore_rate: 0.062 	| return: 16.413
+episode: 1310 	| explore_rate: 0.058 	| return: 16.389
+episode: 1320 	| explore_rate: 0.055 	| return: 16.413
+episode: 1330 	| explore_rate: 0.052 	| return: 16.449
+episode: 1340 	| explore_rate: 0.049 	| return: 16.413
+episode: 1350 	| explore_rate: 0.045 	| return: 16.413
+episode: 1360 	| explore_rate: 0.042 	| return: 16.413
+episode: 1370 	| explore_rate: 0.039 	| return: 16.28
+episode: 1380 	| explore_rate: 0.036 	| return: 16.413
+episode: 1390 	| explore_rate: 0.033 	| return: 16.243
+episode: 1400 	| explore_rate: 0.03 	| return: 16.415
+episode: 1410 	| explore_rate: 0.027 	| return: 16.413
+episode: 1420 	| explore_rate: 0.023 	| return: 16.449
+episode: 1430 	| explore_rate: 0.02 	| return: 16.413
+episode: 1440 	| explore_rate: 0.017 	| return: 16.393
+episode: 1450 	| explore_rate: 0.014 	| return: 16.462
+episode: 1460 	| explore_rate: 0.011 	| return: 16.413
+episode: 1470 	| explore_rate: 0.008 	| return: 16.413
+episode: 1480 	| explore_rate: 0.006 	| return: 16.381
+episode: 1490 	| explore_rate: 0.003 	| return: 16.413
+
+Testing on agent with Q-table:
+[[0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0.]
+ ...
+ [0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0.]]
+
+Learned Q-learning policy tested
+
+e_return	t5p_first	tTiny_first	total_drug_in
+
+12.982306300073974	1234.8766174200712	N/A	1323.0
+Done
