@@ -51,7 +51,21 @@ minZE = df['alpha_ZE'].min()
 # Visualizing qualitative results
 fig, ax = plt.subplots(1, 1, figsize=(7, 6))
 
-sns.scatterplot(data=df, x="alpha_EZ", y="alpha_ZE", hue="regime", palette="Pastel1")
+import matplotlib.tri as tri
+x = df['alpha_EZ']
+y = df['alpha_ZE']
+z = pd.factorize(df['regime'])[0]
+
+triang = tri.Triangulation(x, y)
+
+pastel = sns.color_palette("Pastel1", 5, as_cmap=True)
+
+sns.scatterplot(data=df, x="alpha_EZ", y="alpha_ZE", hue="regime", 
+                palette="Pastel1")
+tcf = ax.tricontourf(triang, z, levels=6, cmap=pastel, vmin=0, vmax=8)
+# fig.colorbar(tcf)
+# ax.tricontour(triang, z, levels=6, colors=sns.color_palette("Pastel1", 5), linewidths=2.0)
+ax.tricontour(triang, z, levels=6, colors='grey', linewidths=1.5)
 
 ax.set_xlim((minEZ, maxEZ))
 ax.set_ylim((minZE, maxZE))
@@ -59,17 +73,29 @@ ax.set_ylim((minZE, maxZE))
 ax.set_xlabel(r"$\alpha_{EZ}$")
 ax.set_ylabel(r"$\alpha_{ZE}$")
 
-ax.legend(bbox_to_anchor=(1, 0.5), loc='upper left', markerscale=2.5)
+from matplotlib.patches import Rectangle
+ax.add_patch(Rectangle((-0.03, -0.05), 0.05, 0.06, 
+             edgecolor = '#dd5129', lw=2, fill=False, label="region of interest"))
 
-ax.axvline(0.0, color="black")
-ax.axhline(0.0, color="black")
+ax.scatter(x=-0.06, y=-0.06, marker='^', c='#17A398', s=60,
+           label="example in sub-figure C & D")
+ax.scatter(x=-0.01, y=-0.03, marker='^', c='#FE7F2D', s=60,
+           label="example in sub-figure E")
 
-ax.text(x=0.005, y=0.005, s="+/+", fontsize='large')
-ax.text(x=-0.03, y=0.005, s="-/+", fontsize='large')
-ax.text(x=-0.03, y=-0.03, s="-/-", fontsize='large')
-ax.text(x=0.005, y=-0.03, s="+/-", fontsize='large')
+ax.legend(bbox_to_anchor=(1, -0.04), loc='lower left', markerscale=2.5)
 
-ax.text(x=0.0, y=0.028, s="0/+", fontsize='large')
-ax.text(x=0.022, y=0.0, s="+/0", fontsize='large')
+ax.axvline(0.0, color="black", ls='dashed')
+ax.axhline(0.0, color="black", ls='dashed')
 
-fig.savefig("./qualitative_results.png", bbox_inches="tight")
+ax.text(x=0.002, y=0.002, s="+/+", fontsize=25)
+ax.text(x=-0.01, y=0.002, s="-/+", fontsize=25)
+ax.text(x=-0.01, y=-0.01, s="-/-", fontsize=25)
+ax.text(x=0.002, y=-0.01, s="+/-", fontsize=25)
+
+ax.text(x=0.001, y=0.028, s="0/+", fontsize=25)
+ax.text(x=0.022, y=0.001, s="+/0", fontsize=25)
+
+ax.text(x=0.001, y=-0.075, s="0/-", fontsize=25)
+ax.text(x=-0.06, y=0.001, s="-/0", fontsize=25)
+
+fig.savefig("qualitative_results.png", bbox_inches='tight')
