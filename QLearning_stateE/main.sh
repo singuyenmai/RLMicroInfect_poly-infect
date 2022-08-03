@@ -5,11 +5,14 @@
 # python $PARALLEL_SCRIPT -f collection_params.qlearning.micEZ70.json
 # python $PARALLEL_SCRIPT -f collection_params.qlearning.micZ140.json
 
-# (Testing only on local machine)
+# (Testing only on local or remote machine (no SLURM job submissions))
 PARALLEL_SCRIPT="../parallel_experiments.py"
 python $PARALLEL_SCRIPT -f collection_params.qlearning.micEZ70.json --local --re_test
 python $PARALLEL_SCRIPT -f collection_params.qlearning.micZ140.json --local --re_test
 
+##################################
+# Collect performance measurements
+##################################
 function get_features(){
     collection=$1;
     metafile=$collection"/metadata.tsv";
@@ -43,7 +46,9 @@ export -f get_features
 get_features qlearning_micEZ70
 get_features qlearning_micZ140
 
-##### Collect features from Q-learning + Rational
+##################################
+# Collect features from Q-learning + Rational
+##################################
 collect="./features.qlearning.rational.tsv"
 
 cat qlearning_micEZ70/features.tsv > $collect

@@ -136,7 +136,8 @@ class ExperimentsCollection():
                 confirmation = input("Please only answer either \"y\" (for Yes) or \"n\" (for No) and type your answer again: ")
             
             if confirmation == "y":
-                JOB_SCRIPT = "/home/singuyen/Study/SCB/1.MSc_projects/Second_project/polyInfect/run_experiment.py"
+                script_dir = os.path.abspath(os.path.dirname(__file__))
+                JOB_SCRIPT = script_dir + "/run_experiment.py"
             else:
                 return
         

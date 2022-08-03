@@ -81,36 +81,84 @@ python simulate_examples.py
 
 Directory `Rational`
 
+### Example in mono-culture, stored in `examples` directory
+
 ```bash
 cd Rational
 
-# Example in mono-culture
-# stored in `examples` directory
 # input - parameter file: `env_params.drug_mono.json`
 # output - figure: `drug_mono.png`
 python simulate_examples.py
-
-# run the experiments & collect performance measurements
-bash main.sh
-
-# visualize results across experiments
-# run Jupyter Notebook `viz_features.ipynb`
 ```
+
+### Run the experiments & collect performance measurements
+
+**First, if you run the experiments on an HPC with SLURM**, then
+
+- Create your own job script by following the script `peregrine_job.sh`, particularly from lines 16. At line 42, change the path to the script `run_experiment.py` accordingly to your machine.
+- Open the script `parallel_experiments.py`, then change the path to your job script at line 129.
+
+**To run separately for each case of MIC level of the neighbor microbe $Z$**, run the `parallel_experiments.py`  script with input as a parameter json file.  For example, to do experiments in the case where $MIC_E = MIC_Z = 70$, follow these command lines
+
+```bash
+cd Rational
+
+# Set a variable named PARALLEL_SCRIPT to the script `parallel_experiments.py` in your machine
+
+# If run on an HPC with SLURM
+python $PARALLEL_SCRIPT -f collection_params.rational.micEZ70.json
+
+# If run on local or remote machine (no SLURM job submissions), 
+# make sure that the script `run_experiment.py` is in the same directory with the `parallel_experiments.py`
+# use the argument `--local`
+python $PARALLEL_SCRIPT -f collection_params.rational.micEZ70.json --local
+```
+
+- To collect the performance measurements, run the lines 15-45 of the script `Rational/main.sh` in your terminal
+
+**To run all the experiments and collect the measurements from them**:
+
+- Open the script `main.sh` 
+- At line 2, change the path to the script file `parallel_experiments.py` 
+- If run on local or remote machine (no SLURM job submissions), add the argument `--local` to lines 4-10
+- Then run the script by following the below command lines
+
+```bash
+cd Rational
+bash main.sh
+```
+
+### Visualize results across experiments
+
+Run Jupyter Notebook `viz_features.ipynb`
+
 
 ## Q-learning on different ecological contexts
 
 Directory `QLearning_stateE`
 
-```bash
-cd QLearning_stateE
+The process for running the experiments here is very similar to when you run the rational policy. Therefore, please follow the instructions in the above section. You would just need to modify the following things:
 
-# run the experiments & collect performance measurements
-# read the file `main.sh` before running it, manual modifications may be needed at lines 3-11
-bash main.sh
+- The parameter file. For example, to do experiments in the case where $MIC_E = MIC_Z = 70$, the parameter file would be `collection_params.qlearning.micEZ70.json`.
 
-# visualize results across experiments
-# run Jupyter Notebook `viz_features.ipynb`
-```
+- Whether you want to do both the training and testing
+
+  - If yes, then no additional argument is required
+
+  - If no, and you could do only testing (given that all the training files have been already there) by using the argument `--re_test`. For example, the following command will test the learned Q-Learning policies in the case where $MIC_E = MIC_Z = 70$ on a local machine:
+
+    ```bash
+    python $PARALLEL_SCRIPT -f collection_params.qlearning.micEZ70.json --local --re_test
+    ```
+
+- **To run all the experiments and collect the measurements from them**, 
+
+  - Open the script `main.sh`, then change the lines 3-11 to fit your running environment (SLURM or local) and your purpose (training-testing or testing-only)
+  - Run the script with `bash main.sh`
+
+- To collect the performance measurements, run the lines 16-47 of the script `QLearning_stateE/main.sh` in your terminal. To collect from both Q-Learning & rational policies, run the lines 52-66.
+
+- To visualize the results across experiments, also run the Jupyter Notebook named `viz_features.ipynb`
 
 ## References
 

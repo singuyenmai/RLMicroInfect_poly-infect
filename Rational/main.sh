@@ -9,6 +9,9 @@ python $PARALLEL_SCRIPT -f collection_params.rational.micZ50.json
 python $PARALLEL_SCRIPT -f collection_params.rational.micZ100.json
 python $PARALLEL_SCRIPT -f collection_params.rational.micZ140.json
 
+##################################
+# Collect performance measurements
+##################################
 function get_features(){
     collection=$1;
     metafile=$collection"/metadata.tsv";
