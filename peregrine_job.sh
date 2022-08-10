@@ -2,7 +2,7 @@
 #SBATCH --job-name=polyInfect
 #SBATCH --output=./slurm_log/%j.log
 
-#SBATCH --time=01-00:00:00
+#SBATCH --time=03-00:00:00
 #SBATCH --partition=regular
 
 #SBATCH --nodes=1
