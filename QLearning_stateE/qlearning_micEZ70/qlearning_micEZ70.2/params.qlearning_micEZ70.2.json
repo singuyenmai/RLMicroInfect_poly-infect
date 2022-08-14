@@ -50,8 +50,8 @@
             "alpha": 0.01
         },
         "training": {
-            "n_episodes": 1500,
-            "decay": 150,
+            "n_episodes": 3000,
+            "decay": 300,
             "episode_time_max": 7200.0
         }
     },
