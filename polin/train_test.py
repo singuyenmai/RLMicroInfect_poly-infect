@@ -99,8 +99,9 @@ class TrainTest():
             self.simulate(sim_time = episode_time_max, done_break = True, 
                           explore_rate = explore_rate, training = True)
             
-            with open(qtable_filename + str(episode) + '.npy', 'wb') as f:
-                np.save(f, self.agent.values)
+            if (episode % 100 == 0.0) or (episode == n_episodes-1):
+                with open(qtable_filename + str(episode) + '.npy', 'wb') as f:
+                    np.save(f, self.agent.values)
             
             t5p_first = self.env.t5p[0] if len(self.env.t5p) > 0 else "N/A"
             tTiny_first = self.env.tTiny[0] if len(self.env.tTiny) > 0 else "N/A"

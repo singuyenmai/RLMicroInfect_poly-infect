@@ -155,9 +155,10 @@ def visualize_simulation(env, st='full',
         ax[2].legend(handles=hdles, ncol=2, 
                      loc='upper right', bbox_to_anchor=(1.02, 1.02))
         
-
-        ax[2].set(xlabel = 'Time (hours)', ylabel='OD')
-        ax[2].set_ylim(0.0, 1.0)
+        ax[2].set_yscale('log')
+        
+        ax[2].set(xlabel = 'Time (hours)', ylabel='log(OD)')
+        ax[2].set_ylim(10**(-5.5), 10**(0.5))
         ax[2].set_xlim(tmin, tmax)
 
         # set title
