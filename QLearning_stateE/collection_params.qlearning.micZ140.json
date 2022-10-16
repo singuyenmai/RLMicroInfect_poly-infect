@@ -24,7 +24,7 @@
         }
     },
     "simulation": {
-        "simulation_time": 5760.0,
+        "simulation_time": 7200.0,
         "env_step_time": 360.0,
         "reset_type": "coexist",
         "reward_func": "minED",
