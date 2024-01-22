@@ -1,9 +1,5 @@
 # Adapting drug policy for microbial community context in infections
 
--by- Si-Nguyen Mai 
--contact- t.s.n.mai@student.rug.nl
--contact- singuyenthumai@gmail.com
-
 I aimed to answer the two following questions: 
 
 1. Would microbial community contexts in infections change the outcome of a rational drug policy?
